@@ -1,11 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login & Register</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>123</h1>
+
+    <div class="container">
+        <div class="form-box" id="login-box">
+            <h2>เข้าสู่ระบบ</h2>
+            <form id="loginForm">
+                <input type="text" id="loginId" placeholder="ชื่อผู้ใช้ หรือ อีเมล" required>
+                <input type="password" id="loginPass" placeholder="รหัสผ่าน" required>
+                <button type="submit">Login</button>
+            </form>
+            <p>ยังไม่มีบัญชี? <a href="#" id="to-register">สมัครสมาชิก</a></p>
+        </div>
+
+        <div class="form-box hidden" id="register-box">
+            <h2>สมัครสมาชิก</h2>
+            <form id="registerForm">
+                <div class="input-group">
+                    <input type="text" id="regName" placeholder="ชื่อ" required>
+                    <input type="text" id="regSurname" placeholder="นามสกุล" required>
+                </div>
+                <input type="text" id="regUsername" placeholder="ชื่อผู้ใช้" required>
+                <input type="email" id="regEmail" placeholder="อีเมล" required>
+                <input type="password" id="regPass" placeholder="รหัสผ่าน" required>
+                <input type="password" id="regConfirmPass" placeholder="ยืนยันรหัสผ่าน" required>
+                <button type="submit">Register</button>
+            </form>
+            <p>มีบัญชีอยู่แล้ว? <a href="#" id="to-login">เข้าสู่ระบบ</a></p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="Loginscript.js"></script>
 </body>
 </html>

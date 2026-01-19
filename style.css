@@ -1,0 +1,8 @@
+body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f2f5; }
+.container { position: relative; width: 350px; }
+.form-box { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 100%; box-sizing: border-box; }
+.hidden { display: none; }
+input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;}
+button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+button:hover { background: #0056b3; }
+.input-group { display: flex; gap: 10px; }
