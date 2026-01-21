@@ -1,65 +1,124 @@
-/* Reset & Base */
+/* --- Reset & Base --- */
 body { margin: 0; font-family: 'Sarabun', sans-serif; background-color: #f9f9f9; }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; padding: 0; margin: 0; }
+hr { border: 0; border-top: 1px solid #eee; margin: 0; }
 .hidden { display: none !important; }
 
-/* --- Navbar --- */
+/* --- Navbar (Fixed) --- */
 .navbar {
     position: fixed; top: 0; left: 0; width: 100%; height: 60px;
     background: white; border-bottom: 1px solid #ddd;
     display: flex; justify-content: space-between; align-items: center;
     padding: 0 20px; box-sizing: border-box; z-index: 1000;
 }
-.hidden { display: none !important; }
+.nav-brand { font-size: 1.2rem; font-weight: bold; color: #333; }
 
-/* ปุ่มต่างๆ */
+/* Navbar Buttons */
 .btn-primary {
     background: #333; color: white; padding: 8px 20px;
-    border-radius: 20px; text-decoration: none; font-size: 14px;
+    border-radius: 20px; font-size: 14px; transition: 0.2s;
 }
+.btn-primary:hover { background: #555; }
+
 .btn-create {
     background: #eee; border: none; padding: 8px 16px;
     border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 5px;
-    font-weight: bold; margin-right: 15px;
+    font-weight: bold; margin-right: 15px; transition: 0.2s;
 }
+.btn-create:hover { background: #e0e0e0; }
 
-/* --- Dropdown Menu (เหมือนรูป 100%) --- */
+/* --- User Profile & Dropdown --- */
 .profile-container { position: relative; display: flex; align-items: center; }
-.profile-pic { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; background: #ddd; }
+.profile-pic { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; background: #ddd; object-fit: cover; }
 
 .dropdown-menu {
-    position: absolute; top: 50px; right: 0;
+    position: absolute; top: 55px; right: 0;
     width: 260px; background: white;
-    border: 1px solid #333; /* ขอบดำตามรูป */
+    border: 1px solid #e0e0e0;
     border-radius: 10px; overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform-origin: top right;
 }
 
-/* Header */
-.dropdown-header { padding: 15px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #333; }
+.dropdown-header { padding: 15px; display: flex; align-items: center; gap: 10px; }
 .dd-avatar { width: 45px; height: 45px; border-radius: 50%; background: #ccc; }
 .dd-info { display: flex; flex-direction: column; }
 .dd-name { font-weight: bold; font-size: 16px; }
 .dd-username { color: #888; font-size: 12px; }
 
-/* List Items */
-.dropdown-list { list-style: none; padding: 0; margin: 0; }
-.dropdown-list li { border-bottom: 1px solid #333; }
-.dropdown-list a {
+.dropdown-list li a {
     display: flex; align-items: center; gap: 15px;
-    padding: 12px 15px; color: black; font-weight: 500;
-    text-decoration: none; transition: 0.2s;
+    padding: 12px 20px; color: #333; font-size: 0.95rem;
+    transition: 0.2s;
 }
-.dropdown-list a:hover { background: #f0f0f0; }
-.dropdown-list i { font-size: 1.2rem; }
+.dropdown-list a:hover { background: #f5f5f5; }
 
-/* Footer (ปุ่มแดง) */
-.dropdown-footer { padding: 15px; }
+.dropdown-footer { padding: 10px 15px 15px; }
 .btn-logout {
     width: 100%; padding: 10px;
-    background: #F06A6A; /* สีชมพูแดงตามรูป */
-    color: black; font-weight: bold; border: none;
-    border-radius: 8px; cursor: pointer; font-size: 14px;
+    background: #F06A6A; color: white;
+    font-weight: bold; border: none;
+    border-radius: 8px; cursor: pointer;
+    transition: 0.2s;
 }
 .btn-logout:hover { background: #d65555; }
+
+/* --- HERO SECTION (ส่วนใหม่) --- */
+.hero-section {
+    background-color: #F0FFF4; /* เขียวอ่อน */
+    padding: 100px 20px 60px; /* เพิ่ม padding-top หลบ Navbar */
+    text-align: center; margin-bottom: 20px;
+}
+.hero-content h1 { font-size: 2.2rem; margin-bottom: 10px; color: #111; }
+.hero-content p { color: #555; margin-bottom: 30px; font-size: 1rem; }
+
+.main-search-box {
+    display: flex; align-items: center; justify-content: space-between;
+    background: white; border: 1px solid #ccc;
+    border-radius: 50px; padding: 5px 5px 5px 20px;
+    max-width: 600px; margin: 0 auto;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+.main-search-box input { border: none; outline: none; flex: 1; margin: 0 10px; font-size: 1rem; }
+.main-search-box button {
+    background: #86EFAC; border: none; padding: 10px 25px;
+    border-radius: 30px; font-weight: bold; cursor: pointer;
+}
+
+/* --- MAIN CONTENT & FILTERS --- */
+.container.main-content { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+.filter-bar { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+.select-group { position: relative; min-width: 180px; }
+.custom-select {
+    width: 100%; padding: 10px 15px;
+    border: 1px solid #ccc; border-radius: 8px;
+    background: white; appearance: none; cursor: pointer;
+}
+.select-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+.btn-filter-search {
+    background: #86EFAC; border: none; padding: 10px 30px;
+    border-radius: 8px; font-weight: bold; cursor: pointer;
+}
+
+/* --- RECIPE GRID --- */
+.recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+.recipe-card {
+    background: white; border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    overflow: hidden; border: 1px solid #eee;
+    transition: transform 0.2s; cursor: pointer;
+}
+.recipe-card:hover { transform: translateY(-5px); }
+.card-img { width: 100%; height: 180px; background-color: #E5E7EB; object-fit: cover; }
+.card-content { padding: 15px; }
+.card-title { font-size: 1.1rem; font-weight: bold; margin: 0 0 10px 0; }
+.card-info { font-size: 0.85rem; color: #555; margin-bottom: 5px; }
+.card-footer { display: flex; align-items: center; gap: 10px; margin-top: 15px; }
+.author-img { width: 25px; height: 25px; border-radius: 50%; background: #D1D5DB; }
+.author-name { font-size: 0.8rem; color: #666; font-weight: bold; }
