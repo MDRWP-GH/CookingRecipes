@@ -11,7 +11,7 @@ app.use(express.static(path.join(__dirname, 'public'))); // ให้ HTML/CSS/J
 
 // Root route - serve home.html
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'home.html'));
+    res.sendFile(path.join(__dirname, 'public', 'home.html'));
 });
 
 // 1. Database Connection (Pool)
@@ -94,4 +94,4 @@ app.post('/api/login', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));
