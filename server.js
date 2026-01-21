@@ -1,20 +1,20 @@
 require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql2');
-const bcrypt = require('bcryptjs'); // ใช้เข้ารหัส Password
+const bcrypt = require('bcryptjs');
 const path = require('path');
+const multer = require('multer'); // เพิ่ม: สำหรับจัดการไฟล์อัปโหลด
+const fs = require('fs');         // เพิ่ม: สำหรับจัดการไฟล์ระบบ (สร้างโฟลเดอร์)
 
 const app = express();
+
+// --- Middleware Setup ---
 app.use(express.json()); // อ่าน JSON จาก Frontend
-app.use(express.static(path.join(__dirname))); // Serve root directory
-app.use(express.static(path.join(__dirname, 'public'))); // ให้ HTML/CSS/JS ทำงานได้
+app.use(express.urlencoded({ extended: true })); // อ่าน Form Data (สำคัญมากสำหรับ upload)
+app.use(express.static(path.join(__dirname))); // Serve root
+app.use(express.static(path.join(__dirname, 'public'))); // Serve public folder
 
-// Root route - serve home.html
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'home.html'));
-});
-
-// 1. Database Connection (Pool)
+// --- Database Connection (Pool) ---
 const pool = mysql.createPool({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
@@ -24,11 +24,35 @@ const pool = mysql.createPool({
     connectionLimit: 10
 }).promise();
 
-// 2. Register API
+// --- Multer Configuration (การตั้งค่าอัปโหลดรูป) ---
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        // สร้างโฟลเดอร์ public/uploads ถ้ายังไม่มี
+        const dir = './public/uploads';
+        if (!fs.existsSync(dir)){
+            fs.mkdirSync(dir, { recursive: true });
+        }
+        cb(null, dir);
+    },
+    filename: (req, file, cb) => {
+        // ตั้งชื่อไฟล์: recipe-เวลา-เลขสุ่ม.นามสกุลเดิม
+        cb(null, 'recipe-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
+
+// ================= ROUTES =================
+
+// Root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'home.html'));
+});
+
+// 1. Register API
 app.post('/api/register', async (req, res) => {
     const { firstName, lastName, username, email, password, confirmPassword } = req.body;
 
-    // Validation เบื้องต้น
     if (!firstName || !lastName || !username || !email || !password) {
         return res.status(400).json({ msg: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
     }
@@ -37,17 +61,14 @@ app.post('/api/register', async (req, res) => {
     }
 
     try {
-        // เช็คว่ามี User ซ้ำไหม
         const [existing] = await pool.execute('SELECT * FROM users WHERE username = ? OR email = ?', [username, email]);
         if (existing.length > 0) {
             return res.status(400).json({ msg: 'ชื่อผู้ใช้หรืออีเมลนี้ถูกใช้งานแล้ว' });
         }
 
-        // เข้ารหัส Password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // บันทึกข้อมูล
         await pool.execute(
             'INSERT INTO users (first_name, last_name, username, email, password) VALUES (?, ?, ?, ?, ?)',
             [firstName, lastName, username, email, hashedPassword]
@@ -61,12 +82,11 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
-// 3. Login API (รองรับทั้ง Username และ Email)
+// 2. Login API
 app.post('/api/login', async (req, res) => {
-    const { identifier, password } = req.body; // identifier คือ username หรือ email
+    const { identifier, password } = req.body;
 
     try {
-        // Query หา User จาก Username หรือ Email
         const [users] = await pool.execute(
             'SELECT * FROM users WHERE username = ? OR email = ?', 
             [identifier, identifier]
@@ -77,14 +97,11 @@ app.post('/api/login', async (req, res) => {
         }
 
         const user = users[0];
-
-        // ตรวจสอบรหัสผ่าน
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ msg: 'รหัสผ่านไม่ถูกต้อง' });
         }
 
-        // Login สำเร็จ (ในโปรเจคจริงควรส่ง JWT Token กลับไป)
         res.json({ msg: 'เข้าสู่ระบบสำเร็จ!', userId: user.id, username: user.username });
 
     } catch (err) {
@@ -93,5 +110,95 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
+// 3. Update User Profile API
+app.put('/api/user/update', async (req, res) => {
+    const { id, username, email, bio } = req.body;
+
+    if (!id) {
+        return res.status(400).json({ msg: 'ไม่พบ User ID' });
+    }
+
+    try {
+        const [existing] = await pool.execute(
+            'SELECT * FROM users WHERE (username = ? OR email = ?) AND id != ?',
+            [username, email, id]
+        );
+
+        if (existing.length > 0) {
+            return res.status(400).json({ msg: 'ชื่อผู้ใช้หรืออีเมลนี้มีคนอื่นใช้แล้ว' });
+        }
+
+        await pool.execute(
+            'UPDATE users SET username = ?, email = ?, bio = ? WHERE id = ?',
+            [username, email, bio, id]
+        );
+
+        res.json({ msg: 'อัปเดตข้อมูลสำเร็จ!', username, bio });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ msg: 'เกิดข้อผิดพลาดที่ Server' });
+    }
+});
+
+// 4. Create Recipe API (เพิ่มสูตรอาหาร)
+// ใช้ upload.single('coverImage') เพื่อรับไฟล์รูปภาพ
+app.post('/api/recipes', upload.single('coverImage'), async (req, res) => {
+    const conn = await pool.getConnection(); // ขอ Connection แยกเพื่อทำ Transaction
+    try {
+        await conn.beginTransaction(); // เริ่ม Transaction
+
+        const { user_id, title, servings, cooking_time } = req.body;
+        const filename = req.file ? req.file.filename : null; // ชื่อไฟล์รูป (ถ้ามี)
+
+        // 4.1 บันทึกตาราง Recipes
+        const [result] = await conn.execute(
+            'INSERT INTO recipes (user_id, title, servings, cooking_time, cover_image) VALUES (?, ?, ?, ?, ?)',
+            [user_id, title, servings, cooking_time, filename]
+        );
+        
+        const recipeId = result.insertId; // ได้ ID ของสูตรที่เพิ่งสร้าง
+
+        // 4.2 บันทึกส่วนผสม (Ingredients)
+        let ingredients = req.body.ingredients || [];
+        // แปลงให้เป็น Array เสมอ (ป้องกันกรณีส่งมาตัวเดียวแล้วเป็น String)
+        if (!Array.isArray(ingredients)) ingredients = [ingredients]; 
+
+        for (const item of ingredients) {
+            if(item) {
+                await conn.execute(
+                    'INSERT INTO ingredients (recipe_id, item_name) VALUES (?, ?)',
+                    [recipeId, item]
+                );
+            }
+        }
+
+        // 4.3 บันทึกวิธีทำ (Steps)
+        let steps = req.body.steps || [];
+        if (!Array.isArray(steps)) steps = [steps];
+
+        let stepNum = 1;
+        for (const instruction of steps) {
+            if(instruction) {
+                await conn.execute(
+                    'INSERT INTO recipe_steps (recipe_id, step_number, instruction) VALUES (?, ?, ?)',
+                    [recipeId, stepNum++, instruction]
+                );
+            }
+        }
+
+        await conn.commit(); // ยืนยันการบันทึกทั้งหมด
+        res.status(201).json({ msg: 'บันทึกสูตรอาหารสำเร็จ!', recipeId: recipeId });
+
+    } catch (err) {
+        await conn.rollback(); // ย้อนกลับข้อมูลทั้งหมดหากเกิด Error
+        console.error(err);
+        res.status(500).json({ msg: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล' });
+    } finally {
+        conn.release(); // คืน Connection กลับสู่ Pool
+    }
+});
+
+// Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));

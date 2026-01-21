@@ -1,0 +1,200 @@
+/* --- Background & Layout --- */
+.create-wrapper {
+    padding-top: 80px;
+    min-height: 100vh;
+    background-color: #E0F7FA; /* พื้นหลังสีฟ้าอ่อน */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 50px;
+}
+
+.page-title {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.recipe-card {
+    background: white;
+    width: 90%;
+    max-width: 1000px; /* การ์ดใหญ่หน่อยเพราะมี 2 คอลัมน์ */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+/* --- Top Section --- */
+.top-section {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.upload-box-container {
+    flex: 0 0 250px; /* Fix ความกว้างกล่องรูป */
+}
+
+.upload-box {
+    width: 100%;
+    height: 300px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-align: center;
+    background-color: #fff;
+    transition: 0.2s;
+}
+.upload-box:hover { background-color: #f9f9f9; }
+.upload-icon { font-size: 3rem; color: #aaa; margin-bottom: 10px; }
+.sub-text { font-size: 0.8rem; color: #888; }
+
+.title-input-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.title-input-container label {
+    font-weight: bold; font-size: 1.1rem; margin-bottom: 10px;
+}
+.input-line {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.2rem;
+    border: 1px solid #888;
+    border-radius: 6px;
+}
+
+/* --- Bottom Section (2 Columns) --- */
+.bottom-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* แบ่งครึ่ง */
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.column h3 { margin-bottom: 20px; text-align: center; }
+
+/* Ingredients Column */
+.ingredients-col, .steps-col {
+    border: 1px solid #eee;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.servings-group, .time-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-box-small {
+    width: 80px;
+    padding: 5px 10px;
+    border: 1px solid #888;
+    border-radius: 6px;
+    text-align: center;
+}
+
+/* Dynamic List Items */
+.list-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+/* Step Item (Card Style) */
+.step-item {
+    background-color: #E0F7FA; /* พื้นหลังสีฟ้าอ่อนของ Step */
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+.step-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.step-number {
+    background: black;
+    color: white;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 0.8rem; font-weight: bold;
+}
+.step-upload {
+    background: white;
+    width: 60px; height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex; justify-content: center; align-items: center;
+    cursor: pointer;
+    margin-left: 34px; /* ให้ตรงกับช่อง input */
+}
+
+.input-rounded {
+    flex: 1;
+    padding: 8px 15px;
+    border: 1px solid #888;
+    border-radius: 20px;
+    outline: none;
+}
+
+.drag-handle, .menu-icon {
+    color: #ccc; cursor: grab; font-size: 1.2rem;
+}
+
+.btn-add {
+    width: 100%;
+    padding: 10px;
+    background: #d1d5db; /* สีเทา */
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.btn-add:hover { background: #9ca3af; }
+
+/* --- Footer Buttons --- */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.btn-action {
+    padding: 10px 30px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-delete { background-color: #F87171; color: black; } /* แดง */
+.btn-save { background-color: #86EFAC; color: black; }   /* เขียว */
+.btn-post { background-color: #FDE047; color: black; }   /* เหลือง */
+
+.btn-delete:hover { background-color: #ef4444; }
+.btn-save:hover { background-color: #4ade80; }
+.btn-post:hover { background-color: #facc15; }
+
+/* Responsive Mobile */
+@media (max-width: 768px) {
+    .top-section { flex-direction: column; }
+    .bottom-section { grid-template-columns: 1fr; }
+    .upload-box-container { flex: auto; }
+}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เพิ่มสูตรอาหาร - Cooking Note</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/create-recipe.style.css">
+    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="home.html" class="nav-brand">Cooking Note</a>
+        </div>
+        <div class="nav-right">
+            <div id="user-nav">
+                <div class="profile-container">
+                    <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic" id="profile-toggle">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="create-wrapper">
+        <h2 class="page-title">เพิ่มสูตรอาหาร</h2>
+
+        <form id="recipeForm" class="recipe-card">
+            
+            <div class="top-section">
+                <div class="upload-box-container">
+                    <div class="upload-box" id="coverUploadBox">
+                        <i class='bx bx-image-add upload-icon'></i>
+                        <p>ใส่ภาพอาหารที่เสร็จแล้ว</p>
+                        <span class="sub-text">โชว์เมนูที่คุณทำเสร็จ</span>
+                        <input type="file" id="coverImage" accept="image/*" hidden>
+                    </div>
+                </div>
+
+                <div class="title-input-container">
+                    <label>ชื่อสูตรอาหาร</label>
+                    <input type="text" class="input-line" placeholder="เช่น ต้มยำกุ้งน้ำข้น" required>
+                </div>
+            </div>
+
+            <div class="bottom-section">
+                
+                <div class="column ingredients-col">
+                    <h3>ส่วนผสม</h3>
+                    
+                    <div class="servings-group">
+                        <label>สำหรับ</label>
+                        <input type="number" class="input-box-small" value="1">
+                        <label>คน</label>
+                    </div>
+
+                    <div id="ingredient-list" class="dynamic-list">
+                        <div class="list-item">
+                            <i class='bx bx-menu drag-handle'></i>
+                            <input type="text" class="input-rounded" placeholder="วัตถุดิบ / ปริมาณ">
+                            <i class='bx bx-dots-horizontal-rounded menu-icon'></i>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-add" id="addIngredientBtn">+ เพิ่มส่วนผสม</button>
+                </div>
+
+                <div class="column steps-col">
+                    <h3>ขั้นตอนวิธีการทำ</h3>
+
+                    <div class="time-group">
+                        <label>เวลาที่ใช้</label>
+                        <input type="text" class="input-box-small" placeholder="เช่น 30 นาที">
+                    </div>
+
+                    <div id="step-list" class="dynamic-list">
+                        <div class="step-item">
+                            <div class="step-header">
+                                <div class="step-number">1</div>
+                                <i class='bx bx-menu drag-handle'></i>
+                                <input type="text" class="input-rounded" placeholder="อธิบายวิธีการทำ...">
+                                <i class='bx bx-dots-horizontal-rounded menu-icon'></i>
+                            </div>
+                            <div class="step-upload">
+                                <i class='bx bx-camera'></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-add" id="addStepBtn">+ เพิ่มวิธีทำ</button>
+                </div>
+
+            </div>
+
+            <div class="action-buttons">
+                <button type="button" class="btn-action btn-delete">ลบ</button>
+                <button type="button" class="btn-action btn-save">บันทึก</button>
+                <button type="submit" class="btn-action btn-post">โพสต์</button>
+            </div>
+
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="js/nav-script.js"></script>
+    <script src="js/create-recipe.js"></script> </body>
+</html>

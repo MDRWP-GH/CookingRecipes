@@ -1,0 +1,100 @@
+/* --- Edit Profile Page Styling --- */
+
+.edit-wrapper {
+    padding-top: 100px; /* เว้นที่ Navbar */
+    min-height: 100vh;
+    background-color: #E0F7FA; /* สีฟ้าอ่อนพื้นหลัง */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* ให้การ์ดอยู่ค่อนไปทางบน */
+    padding-bottom: 50px;
+}
+
+.edit-card {
+    background: white;
+    width: 100%;
+    max-width: 500px; /* ความกว้างการ์ด */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Profile Image Circle */
+.profile-img-container {
+    margin-bottom: 30px;
+}
+.img-preview {
+    width: 100px;
+    height: 100px;
+    background-color: #E0E0E0; /* สีเทาวงกลม */
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.img-preview:hover { opacity: 0.8; }
+
+/* Form Elements */
+#editProfileForm { width: 100%; }
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* จัด label ชิดซ้าย */
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    color: #000;
+}
+
+.form-group input, 
+.form-group textarea {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #888; /* ขอบสีเทาเข้มหน่อยตามรูป */
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box; /* สำคัญ! กันทะลุ */
+    font-family: inherit;
+}
+
+/* Buttons Area */
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* ระยะห่างระหว่างปุ่ม */
+    margin-top: 30px;
+}
+
+.btn-update {
+    background-color: #6EE7B7; /* สีเขียว */
+    color: black;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.2s;
+}
+.btn-update:hover { background-color: #4ade80; }
+
+.btn-cancel {
+    background-color: #F87171; /* สีแดง */
+    color: white; /* ในรูปตัวหนังสือดำหรือขาว? ถ้าแดงเข้มใช้ขาวอ่านง่ายกว่า แต่ถ้าตามรูปน่าจะดำ */
+    color: black; 
+    border: none;
+    padding: 10px 30px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.2s;
+}
+.btn-cancel:hover { background-color: #ef4444; }
