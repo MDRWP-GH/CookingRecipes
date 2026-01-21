@@ -1,0 +1,118 @@
+/* --- Background & Layout --- */
+.fav-wrapper {
+    padding-top: 100px;
+    min-height: 100vh;
+    background-color: #E0F7FA; /* สีฟ้าอ่อน */
+    display: flex;
+    justify-content: center;
+    padding-bottom: 50px;
+}
+
+.fav-container {
+    background: white;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    min-height: 500px;
+}
+
+.fav-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+/* --- Search Bar --- */
+.search-bar-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.search-input-box {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 8px 15px;
+}
+.search-input-box i { font-size: 1.2rem; color: #888; margin-right: 10px; }
+.search-input-box input {
+    border: none; outline: none; width: 100%; font-size: 1rem;
+}
+
+.btn-search {
+    background-color: #86EFAC; /* สีเขียว */
+    border: none;
+    padding: 0 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.btn-search:hover { background-color: #6ee7b7; }
+
+/* --- List Items --- */
+.fav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.fav-item {
+    display: flex;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 140px;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+.fav-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.fav-img {
+    width: 180px;
+    height: 100%;
+    background-color: #ddd;
+    object-fit: cover;
+}
+
+.fav-content {
+    flex: 1;
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.fav-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+}
+.fav-name { font-size: 1.2rem; font-weight: bold; margin: 0; }
+.fav-desc { font-size: 0.9rem; color: #666; margin-top: 5px; }
+
+/* Bookmark Icon */
+.btn-bookmark {
+    background: none; border: none; cursor: pointer;
+    font-size: 1.5rem; color: #333;
+}
+.btn-bookmark:hover { color: #555; }
+
+/* Footer info */
+.fav-footer {
+    display: flex; align-items: center; gap: 10px;
+}
+.author-avatar {
+    width: 25px; height: 25px; border-radius: 50%; background: #ccc;
+}
+.author-name { font-size: 0.8rem; font-weight: bold; color: #555; }
+.save-date { font-size: 0.75rem; color: #999; margin-left: auto; }
+
+/* Empty State */
+.empty-state { text-align: center; color: #888; margin-top: 50px; }

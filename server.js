@@ -199,6 +199,47 @@ app.post('/api/recipes', upload.single('coverImage'), async (req, res) => {
     }
 });
 
+// 5. Get Favorites API (ดึงรายการโปรด)
+app.get('/api/favorites', async (req, res) => {
+    const { user_id } = req.query;
+    try {
+        // JOIN 3 ตาราง: Favorites -> Recipes -> Ingredients (เพื่อเอาชื่อมาโชว์นิดหน่อย)
+        // หมายเหตุ: SQL นี้ดึงข้อมูลพื้นฐานมาแสดงในการ์ด
+        const sql = `
+            SELECT 
+                f.recipe_id, 
+                f.created_at as favorited_at,
+                r.title, 
+                r.cover_image,
+                u.username as author_name
+            FROM favorites f
+            JOIN recipes r ON f.recipe_id = r.id
+            JOIN users u ON r.user_id = u.id
+            WHERE f.user_id = ?
+            ORDER BY f.created_at DESC
+        `;
+        const [rows] = await pool.execute(sql, [user_id]);
+        res.json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ msg: 'Server Error' });
+    }
+});
+
+// 6. Delete Favorite API (ลบรายการโปรด)
+app.delete('/api/favorites', async (req, res) => {
+    const { user_id, recipe_id } = req.body;
+    try {
+        await pool.execute(
+            'DELETE FROM favorites WHERE user_id = ? AND recipe_id = ?',
+            [user_id, recipe_id]
+        );
+        res.json({ msg: 'Deleted' });
+    } catch (err) {
+        res.status(500).json({ msg: 'Error' });
+    }
+});
+
 // Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));

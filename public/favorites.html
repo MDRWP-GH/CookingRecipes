@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายการโปรด - Cooking Note</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/favorites.style.css"> <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="home.html" class="nav-brand">Cooking Note</a>
+        </div>
+        <div class="nav-right">
+            <div id="user-nav">
+                <button class="btn-create" onclick="window.location.href='create-recipe.html'">
+                    <i class='bx bx-plus'></i> เขียนสูตร
+                </button>
+                <div class="profile-container">
+                    <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic" id="profile-toggle">
+                    </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="fav-wrapper">
+        <div class="fav-container">
+            
+            <h2 class="fav-title">รายการโปรด (<span id="fav-count">0</span>)</h2>
+
+            <div class="search-bar-container">
+                <div class="search-input-box">
+                    <i class='bx bx-search'></i>
+                    <input type="text" id="searchInput" placeholder="ค้นหาชื่อเมนูหรือวัตถุดิบ">
+                </div>
+                <button class="btn-search">search</button>
+            </div>
+
+            <div id="favorites-list" class="fav-list">
+                <div class="loading-text">กำลังโหลด...</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="js/nav-script.js"></script>
+    <script src="js/favorites.js"></script>
+</body>
+</html>
