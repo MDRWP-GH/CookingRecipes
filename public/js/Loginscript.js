@@ -81,7 +81,7 @@ document.querySelector('#loginForm').addEventListener('submit', async (e) => {
     const result = await res.json();
     if (res.ok) {
         alert(`ยินดีต้อนรับคุณ ${result.username}`);
-        // window.location.href = '/dashboard.html'; // ไปหน้าถัดไป
+        window.location.href = '/home.html'; // ไปหน้าถัดไป
     } else {
         alert(result.msg);
     }

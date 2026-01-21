@@ -5,10 +5,12 @@ const bcrypt = require('bcryptjs');
 const path = require('path');
 const multer = require('multer'); // เพิ่ม: สำหรับจัดการไฟล์อัปโหลด
 const fs = require('fs');         // เพิ่ม: สำหรับจัดการไฟล์ระบบ (สร้างโฟลเดอร์)
+const cors = require('cors');
 
 const app = express();
 
 // --- Middleware Setup ---
+app.use(cors());
 app.use(express.json()); // อ่าน JSON จาก Frontend
 app.use(express.urlencoded({ extended: true })); // อ่าน Form Data (สำคัญมากสำหรับ upload)
 app.use(express.static(path.join(__dirname))); // Serve root
@@ -16,9 +18,9 @@ app.use(express.static(path.join(__dirname, 'public'))); // Serve public folder
 
 // --- Database Connection (Pool) ---
 const pool = mysql.createPool({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '11223344', // ใส่รหัส MySQL ของคุณ
+    host: 'localhost',
+    user: 'root',
+    password: '11223344', // ใส่รหัส MySQL ของคุณ
     database: 'recipe_db',
     waitForConnections: true,
     connectionLimit: 10
