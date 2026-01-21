@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooking Note - Profile</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="home.html" class="nav-brand">Cooking Note</a>
+        </div>
+        <div class="nav-right">
+            <div id="user-nav">
+                <button class="btn-create">
+                    <i class='bx bx-plus'></i> เขียนสูตร
+                </button>
+                <div class="profile-container">
+                    <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic" id="profile-toggle">
+                    </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="profile-wrapper">
+        
+        <div class="profile-card info-card">
+            <div class="profile-avatar-large"></div>
+            <h2 class="profile-name">ชื่อผู้ใช้</h2>
+            <p class="profile-id">ID:@cook_12345</p>
+            <p class="profile-bio">คำอธิบาย(ถ้ามี)</p>
+            <button class="btn-edit-profile">แก้ไขโปรไฟล์</button>
+        </div>
+
+        <div class="profile-card content-card">
+            <div class="profile-tabs">
+                <button class="tab-btn active" data-target="recipes">สูตรอาหาร</button>
+                <button class="tab-btn" data-target="posts">โพสต์</button>
+            </div>
+
+            <div class="tab-content-area">
+                
+                <div id="recipes" class="tab-pane active">
+                    <div class="empty-state">
+                        <i class='bx bx-book-content empty-icon'></i>
+                        <p>สูตรอาหารแรกของคุณเลย!</p>
+                        <button class="btn-small-create">+ เขียนสูตร</button>
+                    </div>
+                </div>
+
+                <div id="posts" class="tab-pane hidden">
+                    <div class="empty-state">
+                        <i class='bx bx-image empty-icon'></i>
+                        <p>โพสต์แรกของคุณเลย!</p>
+                        <button class="btn-small-create">+ โพสต์</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="js/nav-script.js"></script>
+    <script src="js/profile.js"></script> </body>
+</html>
