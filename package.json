@@ -14,10 +14,20 @@
   "dependencies": {
     "animejs": "^4.2.2",
     "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "multer": "^2.0.2",
     "mysql2": "^3.16.1",
     "nodemon": "^3.1.11"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MDRWP-GH/CookingRecipes.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/MDRWP-GH/CookingRecipes/issues"
+  },
+  "homepage": "https://github.com/MDRWP-GH/CookingRecipes#readme"
 }

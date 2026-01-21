@@ -18,8 +18,8 @@ app.use(express.static(path.join(__dirname, 'public'))); // Serve public folder
 const pool = mysql.createPool({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '', // ใส่รหัส MySQL ของคุณ
-    database: 'my_project_db',
+    password: process.env.DB_PASSWORD || '11223344', // ใส่รหัส MySQL ของคุณ
+    database: 'recipe_db',
     waitForConnections: true,
     connectionLimit: 10
 }).promise();
