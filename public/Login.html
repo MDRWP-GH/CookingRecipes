@@ -4,39 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cooking Note - Login</title>
+    
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/login.style.css">
+    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
 
-    <div class="container">
-        <div class="form-box" id="login-box">
-            <h2>เข้าสู่ระบบ</h2>
-            <form id="loginForm">
-                <input type="text" id="loginId" placeholder="ชื่อผู้ใช้ หรือ อีเมล" required>
-                <input type="password" id="loginPass" placeholder="รหัสผ่าน" required>
-                <button type="submit">Login</button>
-            </form>
-            <p>ยังไม่มีบัญชี? <a href="#" id="to-register">สมัครสมาชิก</a></p>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="home.html" class="nav-brand">Cooking Note</a>
         </div>
 
-        <div class="form-box hidden" id="register-box">
-            <h2>สมัครสมาชิก</h2>
-            <form id="registerForm">
-                <div class="input-group">
-                    <input type="text" id="regName" placeholder="ชื่อ" required>
-                    <input type="text" id="regSurname" placeholder="นามสกุล" required>
+        <div class="nav-right">
+            <div id="guest-nav">
+                <a href="Login.html" class="btn-primary" style="display:none;">เข้าสู่ระบบ</a>
+            </div>
+
+            <div id="user-nav" class="hidden">
+                <button class="btn-create" onclick="window.location.href='create-recipe.html'">
+                    <i class='bx bx-plus'></i> เขียนสูตร
+                </button>
+                <div class="profile-container">
+                    <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic" id="profile-toggle">
+                    <div class="dropdown-menu hidden" id="user-dropdown">
+                        <div class="dropdown-header">
+                            <img src="https://via.placeholder.com/50" class="dd-avatar">
+                            <div class="dd-info">
+                                <span class="dd-name">ชื่อผู้ใช้</span>
+                                <span class="dd-username">@username</span>
+                            </div>
+                        </div>
+                        <hr>
+                        <ul class="dropdown-list">
+                            <li><a href="profile.html"><i class='bx bx-user'></i> โปรไฟล์</a></li>
+                            <li><a href="favorites.html"><i class='bx bx-bookmark'></i> รายการโปรด</a></li>
+                            <li><a href="#"><i class='bx bx-book-bookmark'></i> ห้องเก็บสูตร</a></li>
+                            <li><a href="#"><i class='bx bx-bell'></i> การแจ้งเตือน</a></li>
+                            <li><a href="edit-profile.html"><i class='bx bx-cog'></i> ตั้งค่า</a></li>
+                        </ul>
+                        <hr>
+                        <div class="dropdown-footer">
+                            <button class="btn-logout" id="logout-btn">ออกจากระบบ</button>
+                        </div>
+                    </div>
                 </div>
-                <input type="text" id="regUsername" placeholder="ชื่อผู้ใช้" required>
-                <input type="email" id="regEmail" placeholder="อีเมล" required>
-                <input type="password" id="regPass" placeholder="รหัสผ่าน" required>
-                <input type="password" id="regConfirmPass" placeholder="ยืนยันรหัสผ่าน" required>
-                <button type="submit">Register</button>
-            </form>
-            <p>มีบัญชีอยู่แล้ว? <a href="#" id="to-login">เข้าสู่ระบบ</a></p>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="container">
+            <div class="form-box" id="login-box">
+                <h2>เข้าสู่ระบบ</h2>
+                <form id="loginForm">
+                    <input type="text" id="loginId" placeholder="ชื่อผู้ใช้ หรือ อีเมล" required>
+                    <input type="password" id="loginPass" placeholder="รหัสผ่าน" required>
+                    <button type="submit">Login</button>
+                </form>
+                <p>ยังไม่มีบัญชี? <a href="#" id="to-register">สมัครสมาชิก</a></p>
+            </div>
+
+            <div class="form-box hidden" id="register-box">
+                <h2>สมัครสมาชิก</h2>
+                <form id="registerForm">
+                    <div class="input-group">
+                        <input type="text" id="regName" placeholder="ชื่อ" required>
+                        <input type="text" id="regSurname" placeholder="นามสกุล" required>
+                    </div>
+                    <input type="text" id="regUsername" placeholder="ชื่อผู้ใช้" required>
+                    <input type="email" id="regEmail" placeholder="อีเมล" required>
+                    <input type="password" id="regPass" placeholder="รหัสผ่าน" required>
+                    <input type="password" id="regConfirmPass" placeholder="ยืนยันรหัสผ่าน" required>
+                    <button type="submit">Register</button>
+                </form>
+                <p>มีบัญชีอยู่แล้ว? <a href="#" id="to-login">เข้าสู่ระบบ</a></p>
+            </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="js/Loginscript.js"></script>
-</body>
+    <script src="js/nav-script.js"></script> <script src="js/Loginscript.js"></script> </body>
 </html>

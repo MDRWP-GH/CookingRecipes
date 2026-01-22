@@ -6,7 +6,6 @@ function switchForm(showRegister) {
     const outBox = showRegister ? loginBox : registerBox;
     const inBox = showRegister ? registerBox : loginBox;
 
-    // Animation ออก
     anime({
         targets: outBox,
         opacity: [1, 0],
@@ -17,7 +16,6 @@ function switchForm(showRegister) {
             outBox.classList.add('hidden');
             inBox.classList.remove('hidden');
             
-            // Animation เข้า
             anime({
                 targets: inBox,
                 opacity: [0, 1],
@@ -52,15 +50,20 @@ document.querySelector('#registerForm').addEventListener('submit', async (e) => 
         confirmPassword: document.querySelector('#regConfirmPass').value
     };
 
-    const res = await fetch('/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    });
+    try {
+        const res = await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
 
-    const result = await res.json();
-    alert(result.msg);
-    if (res.ok) switchForm(false); // สมัครผ่านให้เด้งไปหน้า Login
+        const result = await res.json();
+        alert(result.msg);
+        if (res.ok) switchForm(false); 
+    } catch (error) {
+        console.error('Error:', error);
+        alert('เกิดข้อผิดพลาดในการเชื่อมต่อ');
+    }
 });
 
 // 3. Logic การส่งข้อมูล (Login)
@@ -72,17 +75,28 @@ document.querySelector('#loginForm').addEventListener('submit', async (e) => {
         password: document.querySelector('#loginPass').value
     };
 
-    const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    });
+    try {
+        const res = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
 
-    const result = await res.json();
-    if (res.ok) {
-        alert(`ยินดีต้อนรับคุณ ${result.username}`);
-        window.location.href = '/home.html'; // ไปหน้าถัดไป
-    } else {
-        alert(result.msg);
+        const result = await res.json();
+        
+        if (res.ok) {
+            // ✅ บันทึกข้อมูลลง LocalStorage (ส่วนสำคัญที่เพิ่มมา)
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userId', result.userId);
+            localStorage.setItem('username', result.username);
+
+            alert(`ยินดีต้อนรับคุณ ${result.username}`);
+            window.location.href = 'home.html'; // ไปหน้า Home
+        } else {
+            alert(result.msg);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('เกิดข้อผิดพลาดในการเชื่อมต่อ');
     }
 });

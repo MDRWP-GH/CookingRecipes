@@ -19,9 +19,10 @@ app.use(express.static(path.join(__dirname, 'public'))); // Serve public folder
 // --- Database Connection (Pool) ---
 const pool = mysql.createPool({
     host: 'localhost',
+    port: 8889,        // <--- เพิ่มบรรทัดนี้ครับ (สำคัญมากสำหรับ MAMP!)
     user: 'root',
-    password: '11223344', // ใส่รหัส MySQL ของคุณ
-    database: 'recipe_db',
+    password: 'root',  // รหัสของ MAMP ถูกแล้วครับ
+    database: 'my_project_db',
     waitForConnections: true,
     connectionLimit: 10
 }).promise();
