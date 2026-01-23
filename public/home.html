@@ -11,7 +11,9 @@
 
     <nav class="navbar">
         <div class="nav-left">
-            <a href="#" class="nav-brand">Cooking Note</a>
+            <a href="home.html" class="nav-brand">
+                <i class='bx bxs-chef-hat'></i> Cooking Note
+            </a>
         </div>
 
         <div class="nav-right">
@@ -20,8 +22,8 @@
             </div>
 
             <div id="user-nav" class="hidden">
-                <button class="btn-create">
-                    <i class='bx bx-plus'></i> เขียนสูตร
+                <button class="btn-create" onclick="window.location.href='create-recipe.html'">
+                    <i class='bx bx-plus'></i> <span>เขียนสูตร</span>
                 </button>
                 
                 <div class="profile-container">
@@ -32,17 +34,15 @@
                             <img src="https://via.placeholder.com/50" class="dd-avatar">
                             <div class="dd-info">
                                 <span class="dd-name">ชื่อผู้ใช้</span>
-                                <span class="dd-username">@cook_12345</span>
+                                <span class="dd-username">@username</span>
                             </div>
                         </div>
-                        <hr>
                         <ul class="dropdown-list">
-                            <li><a href="profile.html"></a><a href="#"><i class='bx bx-user'></i> โปรไฟล์</a></li>
-                            <li><a href="#"><i class='bx bx-bookmark'></i> รายการโปรด</a></li>
+                            <li><a href="profile.html"><i class='bx bx-user'></i> โปรไฟล์</a></li>
+                            <li><a href="favorites.html"><i class='bx bx-bookmark'></i> รายการโปรด</a></li>
                             <li><a href="#"><i class='bx bx-bell'></i> การแจ้งเตือน</a></li>
-                            <li><a href="#"><i class='bx bx-cog'></i> ตั้งค่า</a></li>
+                            <li><a href="edit-profile.html"><i class='bx bx-cog'></i> ตั้งค่า</a></li>
                         </ul>
-                        <hr>
                         <div class="dropdown-footer">
                             <button class="btn-logout" id="logout-btn">ออกจากระบบ</button>
                         </div>
@@ -66,7 +66,6 @@
     </header>
 
     <div class="container main-content">
-        
         <div class="filter-bar">
             <div class="select-group">
                 <select class="custom-select">
@@ -78,7 +77,6 @@
                 </select>
                 <i class='bx bx-chevron-down select-icon'></i>
             </div>
-
             <div class="select-group">
                 <select class="custom-select">
                     <option value="" disabled selected>วิธีการทำ</option>
@@ -88,15 +86,14 @@
                 </select>
                 <i class='bx bx-chevron-down select-icon'></i>
             </div>
-
             <button class="btn-filter-search">search</button>
         </div>
 
-        <div class="recipe-grid" id="recipe-grid">
-            </div>
-
+        <div class="recipe-grid" id="recipe-grid"></div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="js/nav-script.js"></script> <script src="js/home.js"></script>       </body>
+    <script src="js/nav-script.js"></script> 
+    <script src="js/home.js"></script>
+</body>
 </html>

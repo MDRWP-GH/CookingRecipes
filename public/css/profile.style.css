@@ -1,10 +1,8 @@
 /* --- PROFILE PAGE SPECIFIC STYLES --- */
-
-/* พื้นหลังและการจัดวางภาพรวม */
 .profile-wrapper {
-    padding-top: 80px; /* เว้นที่ให้ Navbar */
+    padding-top: 80px;
     min-height: 100vh;
-    background-color: #E0F7FA; /* สีฟ้าอ่อนตามรูป */
+    background-color: #E0F7FA;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -12,7 +10,6 @@
     padding-bottom: 40px;
 }
 
-/* การ์ดพื้นหลังสีขาว (ใช้ร่วมกันทั้ง 2 ใบ) */
 .profile-card {
     background: white;
     width: 90%;
@@ -22,7 +19,6 @@
     overflow: hidden;
 }
 
-/* --- Card 1: User Info (ส่วนข้อมูลผู้ใช้) --- */
 .info-card {
     padding: 30px;
     text-align: center;
@@ -34,7 +30,6 @@
     background-color: #E0E0E0;
     border-radius: 50%;
     margin-bottom: 15px;
-    /* ถ้ามีรูปจริง ให้ใช้ object-fit: cover; */
 }
 
 .profile-name { font-size: 1.4rem; font-weight: bold; margin: 0 0 5px 0; }
@@ -54,10 +49,9 @@
 }
 .btn-edit-profile:hover { background: #f9f9f9; border-color: #999; }
 
-/* --- Card 2: Tabs & Content (ส่วนเมนูสูตร/โพสต์) --- */
 .profile-tabs {
     display: flex;
-    border-bottom: 1px solid #FFCC80; /* เส้นสีส้มจางๆ */
+    border-bottom: 1px solid #FFCC80;
 }
 
 .tab-btn {
@@ -73,13 +67,11 @@
     transition: 0.2s;
 }
 
-/* Active Tab: เส้นดำ ตัวหนังสือดำ */
 .tab-btn.active {
     color: black;
     border-bottom: 3px solid black; 
 }
 
-/* --- Empty State Content --- */
 .tab-content-area { padding: 50px 20px; text-align: center; }
 
 .empty-state {
@@ -97,3 +89,4 @@
     cursor: pointer;
 }
 .btn-small-create:hover { background: #d0d0d0; }
+.hidden { display: none; }

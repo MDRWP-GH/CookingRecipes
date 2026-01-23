@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายละเอียดเมนู - Cooking Note</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/recipe-detail.style.css"> <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="home.html" class="nav-brand">
+                <i class='bx bxs-chef-hat'></i> Cooking Note
+            </a>
+        </div>
+        <div class="nav-right">
+            <div id="user-nav">
+                <button class="btn-create" onclick="window.location.href='create-recipe.html'">
+                    <i class='bx bx-plus'></i> <span>เขียนสูตร</span>
+                </button>
+                <div class="profile-container">
+                    <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic" id="profile-toggle">
+                    <div class="dropdown-menu hidden" id="user-dropdown">
+                         <div class="dropdown-footer">
+                            <button class="btn-logout" id="logout-btn">ออกจากระบบ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="detail-wrapper">
+        <div id="loading" class="loading-state">กำลังโหลดข้อมูล...</div>
+
+        <div id="recipe-content" class="recipe-content hidden">
+            
+            <div class="recipe-header">
+                <img id="cover-img" src="" alt="Menu Image" class="cover-image">
+                <div class="header-info">
+                    <h1 id="recipe-title">ชื่อเมนูอาหาร</h1>
+                    
+                    <div class="author-info">
+                        <img id="author-img" src="" class="author-avatar">
+                        <div>
+                            <span id="author-name" class="author-name">ชื่อคนเขียน</span>
+                            <span id="post-date" class="post-date">วันที่โพสต์</span>
+                        </div>
+                    </div>
+
+                    <div class="meta-tags">
+                        <span class="tag"><i class='bx bx-time'></i> <span id="cooking-time">- นาที</span></span>
+                        <span class="tag"><i class='bx bx-dish'></i> สำหรับ <span id="servings">-</span> ท่าน</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-body">
+                <div class="col-ingredients">
+                    <div class="ing-card">
+                        <h3><i class='bx bx-basket'></i> วัตถุดิบและส่วนผสม</h3>
+                        <ul id="ingredient-list" class="ing-list">
+                            </ul>
+                    </div>
+                </div>
+
+                <div class="col-steps">
+                    <h3><i class='bx bx-list-ol'></i> ขั้นตอนการทำ</h3>
+                    <div id="step-list" class="steps-container">
+                        </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="js/nav-script.js"></script>
+    <script src="js/recipe-detail.js"></script> </body>
+</html>

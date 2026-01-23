@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const res = await fetch(`/api/favorites?user_id=${userId}`);
         const favorites = await res.json();
 
-        favCountSpan.innerText = favorites.length; // อัปเดตตัวเลข
+        favCountSpan.innerText = favorites.length;
 
         if (favorites.length === 0) {
             listContainer.innerHTML = '<div class="empty-state">ยังไม่มีรายการโปรด</div>';
@@ -24,15 +24,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         // 2. สร้าง HTML รายการ
         let html = '';
         favorites.forEach(item => {
-            // แปลงวันที่เป็นไทย
             const date = new Date(item.favorited_at);
             const dateStr = date.toLocaleDateString('th-TH', { 
                 day: 'numeric', month: 'long', year: 'numeric' 
             });
 
-            // รูปปก (ถ้าไม่มีใช้ Placeholder)
             const imgSrc = item.cover_image ? `/uploads/${item.cover_image}` : 'https://via.placeholder.com/180';
 
+            // ✅ เพิ่ม onclick="..." ตรงนี้
             html += `
             <div class="fav-item" onclick="window.location.href='recipe-detail.html?id=${item.recipe_id}'">
                 <img src="${imgSrc}" class="fav-img">
@@ -40,14 +39,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div class="fav-header">
                         <div>
                             <h3 class="fav-name">${item.title}</h3>
-                            <p class="fav-desc">ประเภท: ${item.item_name || 'ทั่วไป'}</p> </div>
+                            <p class="fav-desc">ประเภท: ${item.item_name || 'ทั่วไป'}</p> 
+                        </div>
+                        
                         <button class="btn-bookmark" onclick="removeFavorite(event, ${item.recipe_id})">
                             <i class='bx bxs-bookmark'></i>
                         </button>
                     </div>
                     
                     <div class="fav-footer">
-                        <div class="author-avatar"></div> <span class="author-name">ชื่อคนเขียนสูตร (${item.recipe_id})</span>
+                        <div class="author-avatar"></div> 
+                        <span class="author-name">ชื่อคนเขียนสูตร</span>
                         <span class="save-date">บันทึกเมื่อ ${dateStr}</span>
                     </div>
                 </div>
@@ -74,7 +76,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // ฟังก์ชันลบรายการโปรด
 async function removeFavorite(e, recipeId) {
-    e.stopPropagation(); // กันไม่ให้กดแล้วเด้งไปหน้า Detail
+    e.stopPropagation(); // ⛔ สำคัญ: หยุดไม่ให้คลิกทะลุไปโดนตัวการ์ด
+    
     if(!confirm('ต้องการลบออกจากรายการโปรด?')) return;
 
     const userId = localStorage.getItem('userId');
@@ -86,9 +89,7 @@ async function removeFavorite(e, recipeId) {
         });
 
         if(res.ok) {
-            // ลบสำเร็จ ให้รีโหลดหน้าหรือลบ Element ออก
             e.target.closest('.fav-item').remove();
-            // ลดเลขตัวนับ
             const count = document.getElementById('fav-count');
             count.innerText = parseInt(count.innerText) - 1;
         }

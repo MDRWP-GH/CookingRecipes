@@ -52,6 +52,23 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'home.html'));
 });
 
+// 0. ต้องเอาตัว "ดึงทั้งหมด" (Specific Route) ไว้ก่อน
+app.get('/api/recipes/all', async (req, res) => {
+    try {
+        const sql = `
+            SELECT r.*, u.username, u.profile_image as author_image 
+            FROM recipes r 
+            JOIN users u ON r.user_id = u.id 
+            ORDER BY r.created_at DESC
+        `;
+        const [rows] = await pool.execute(sql);
+        res.json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ msg: 'Server Error' });
+    }
+});
+
 // 1. Register API
 app.post('/api/register', async (req, res) => {
     const { firstName, lastName, username, email, password, confirmPassword } = req.body;
@@ -240,6 +257,63 @@ app.delete('/api/favorites', async (req, res) => {
         res.json({ msg: 'Deleted' });
     } catch (err) {
         res.status(500).json({ msg: 'Error' });
+    }
+});
+
+// 7. Get User Recipes API (ดึงสูตรของ User คนนั้นๆ)
+app.get('/api/user/recipes', async (req, res) => {
+    const { user_id } = req.query;
+    try {
+        const [rows] = await pool.execute(
+            'SELECT * FROM recipes WHERE user_id = ? ORDER BY created_at DESC',
+            [user_id]
+        );
+        res.json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ msg: 'Server Error' });
+    }
+});
+
+// 8. Get Single Recipe API (ดึงรายละเอียดสูตรตาม ID - ตัวนี้แหละที่ขาดไป!)
+app.get('/api/recipes/:id', async (req, res) => {
+    const recipeId = req.params.id;
+    try {
+        // 1. ดึงข้อมูลสูตร + คนเขียน
+        const [recipeRows] = await pool.execute(`
+            SELECT r.*, u.username, u.profile_image as author_image 
+            FROM recipes r 
+            JOIN users u ON r.user_id = u.id 
+            WHERE r.id = ?
+        `, [recipeId]);
+
+        if (recipeRows.length === 0) {
+            return res.status(404).json({ msg: 'ไม่พบสูตรอาหารนี้' });
+        }
+        const recipe = recipeRows[0];
+
+        // 2. ดึงส่วนผสม
+        const [ingredientRows] = await pool.execute(
+            'SELECT * FROM ingredients WHERE recipe_id = ?', 
+            [recipeId]
+        );
+
+        // 3. ดึงวิธีทำ
+        const [stepRows] = await pool.execute(
+            'SELECT * FROM recipe_steps WHERE recipe_id = ? ORDER BY step_number ASC', 
+            [recipeId]
+        );
+
+        // ส่งข้อมูลกลับไป
+        res.json({
+            ...recipe,
+            ingredients: ingredientRows,
+            steps: stepRows
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ msg: 'Server Error' });
     }
 });
 
