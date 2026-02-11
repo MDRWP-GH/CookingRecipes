@@ -53,8 +53,15 @@ const recipeStorage = multer.diskStorage({
     cb(null, prefix + Date.now() + '-' + Math.round(Math.random() * 1e9) + path.extname(file.originalname));
   }
 });
+<<<<<<< HEAD
 
 // profile image
+=======
+const upload = multer({ storage });
+<<<<<<< HEAD
+=======
+// --- Multer for Profile Image ---
+>>>>>>> 3b077ed05ff2bb57b8da206ccbf1da18300aa520
 const profileStorage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, ensureUploadDir()),
   filename: (req, file, cb) => {
@@ -65,9 +72,15 @@ const profileStorage = multer.diskStorage({
 const uploadRecipe = multer({ storage: recipeStorage });
 const uploadProfile = multer({ storage: profileStorage });
 
+<<<<<<< HEAD
 /* =========================================================
    ROUTES
    ========================================================= */
+=======
+>>>>>>> 73f580b031af0ff1f5fb792fef96874b24ffc275
+
+// ================= ROUTES =================
+>>>>>>> 3b077ed05ff2bb57b8da206ccbf1da18300aa520
 
 // Root route
 app.get('/', (req, res) => {
@@ -449,6 +462,8 @@ app.get('/api/recipes/:id', async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
+=======
 /* =========================================================
    ✅ 9.5) DELETE RECIPE (เฉพาะเจ้าของสูตรเท่านั้น) + ลบรูป
    ========================================================= */
@@ -523,6 +538,7 @@ app.delete('/api/recipes/:id', async (req, res) => {
   }
 });
 
+>>>>>>> 73f580b031af0ff1f5fb792fef96874b24ffc275
 // 10) Delete account
 app.post("/api/user/delete", async (req, res) => {
   const { userId, password } = req.body;
@@ -548,7 +564,11 @@ app.post("/api/user/delete", async (req, res) => {
       return res.status(401).json({ msg: "รหัสผ่านไม่ถูกต้อง" });
     }
 
+<<<<<<< HEAD
+    const [recipeRows] = await conn.execute("SELECT id FROM recipes WHERE user_id = ?", [userId]);
+=======
     const [recipeRows] = await conn.execute("SELECT id, cover_image FROM recipes WHERE user_id = ?", [userId]);
+>>>>>>> 73f580b031af0ff1f5fb792fef96874b24ffc275
     const recipeIds = recipeRows.map(r => r.id);
 
     await conn.execute("DELETE FROM favorites WHERE user_id = ?", [userId]);
@@ -561,7 +581,13 @@ app.post("/api/user/delete", async (req, res) => {
       await conn.execute(`DELETE FROM recipes WHERE id IN (${placeholders})`, recipeIds);
     }
 
+<<<<<<< HEAD
     // ลบรูป cover ของสูตร
+=======
+<<<<<<< HEAD
+=======
+    // (OPTION) ลบรูปของ recipe ที่ user นี้เคยอัปโหลด
+>>>>>>> 3b077ed05ff2bb57b8da206ccbf1da18300aa520
     for (const r of recipeRows) {
       if (r.cover_image) {
         const filePath = path.join(__dirname, 'public', 'uploads', r.cover_image);
@@ -569,12 +595,16 @@ app.post("/api/user/delete", async (req, res) => {
       }
     }
 
+<<<<<<< HEAD
     // ลบรูปโปรไฟล์
     if (user.profile_image) {
       const p = path.join(__dirname, 'public', 'uploads', user.profile_image);
       try { if (fs.existsSync(p)) fs.unlinkSync(p); } catch (_) {}
     }
 
+=======
+>>>>>>> 73f580b031af0ff1f5fb792fef96874b24ffc275
+>>>>>>> 3b077ed05ff2bb57b8da206ccbf1da18300aa520
     await conn.execute("DELETE FROM users WHERE id = ?", [userId]);
 
     await conn.commit();
@@ -626,7 +656,42 @@ app.post("/api/notifications/read", async (req, res) => {
     console.error(err);
     res.status(500).json({ msg: "Server Error" });
   }
+<<<<<<< HEAD
+=======
 });
+<<<<<<< HEAD
+=======
+
+// Upload profile image
+app.post('/api/user/profile-image', uploadProfile.single('profileImage'), async (req, res) => {
+  const { user_id } = req.body;
+  if (!user_id) return res.status(400).json({ msg: 'missing user_id' });
+  if (!req.file) return res.status(400).json({ msg: 'missing file' });
+
+  try {
+    // (OPTION) ลบรูปเดิมในเครื่อง
+    const [rows] = await pool.execute('SELECT profile_image FROM users WHERE id = ?', [user_id]);
+    const oldImg = rows.length ? rows[0].profile_image : null;
+
+    await pool.execute(
+      'UPDATE users SET profile_image = ? WHERE id = ?',
+      [req.file.filename, user_id]
+    );
+
+    if (oldImg) {
+      const oldPath = path.join(__dirname, 'public', 'uploads', oldImg);
+      try { if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath); } catch (_) {}
+    }
+
+    res.json({ msg: 'ok', profile_image: req.file.filename });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server Error' });
+  }
+>>>>>>> 73f580b031af0ff1f5fb792fef96874b24ffc275
+});
+
+>>>>>>> 3b077ed05ff2bb57b8da206ccbf1da18300aa520
 // Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));
