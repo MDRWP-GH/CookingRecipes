@@ -18,13 +18,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // --- Database Connection (Pool) ---
 const pool = mysql.createPool({
-    host: 'localhost',
-    port: 8889,
-    user: 'root',
-    password: 'root',
-    database: 'my_project_db',
-    waitForConnections: true,
-    connectionLimit: 10
+  host: '127.0.0.1',
+  port: 3307,
+  user: 'cookapp',
+  password: '123456',
+  database: 'my_project_db',
+  waitForConnections: true,
+  connectionLimit: 10
 }).promise();
 
 // --- Multer Configuration ---
@@ -39,6 +39,22 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage });
+<<<<<<< HEAD
+=======
+// --- Multer for Profile Image ---
+const profileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dir = './public/uploads';
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => {
+    cb(null, 'avatar-' + Date.now() + path.extname(file.originalname));
+  }
+});
+const uploadProfile = multer({ storage: profileStorage });
+
+>>>>>>> 73f580b031af0ff1f5fb792fef96874b24ffc275
 
 // ================= ROUTES =================
 
@@ -367,6 +383,74 @@ app.get('/api/recipes/:id', async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
+=======
+/* =========================================================
+   ✅ 9.5) DELETE RECIPE (เฉพาะเจ้าของสูตรเท่านั้น) + ลบรูป
+   ========================================================= */
+app.delete('/api/recipes/:id', async (req, res) => {
+  const recipeId = req.params.id;
+  const { user_id } = req.body;
+
+  if (!user_id) return res.status(400).json({ msg: 'missing user_id' });
+
+  const conn = await pool.getConnection();
+  try {
+    await conn.beginTransaction();
+
+    // หาเจ้าของ + cover_image
+    const [rows] = await conn.execute(
+      'SELECT user_id, title, cover_image FROM recipes WHERE id = ?',
+      [recipeId]
+    );
+
+    if (rows.length === 0) {
+      await conn.rollback();
+      return res.status(404).json({ msg: 'ไม่พบสูตรอาหารนี้' });
+    }
+
+    const ownerId = rows[0].user_id;
+    const title = rows[0].title;
+    const coverImage = rows[0].cover_image;
+
+    // เช็คสิทธิ์: เฉพาะเจ้าของ
+    if (Number(ownerId) !== Number(user_id)) {
+      await conn.rollback();
+      return res.status(403).json({ msg: 'คุณไม่มีสิทธิ์ลบสูตรนี้' });
+    }
+
+    // ลบ recipe (ตารางลูกจะ cascade)
+    await conn.execute('DELETE FROM recipes WHERE id = ?', [recipeId]);
+
+    // (OPTION) ลบไฟล์รูปปกใน uploads ด้วย
+    if (coverImage) {
+      const filePath = path.join(__dirname, 'public', 'uploads', coverImage);
+      try {
+        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+      } catch (e) {
+        // ไม่ให้ fail เพราะลบไฟล์ไม่สำเร็จ (แค่ log)
+        console.warn('Delete cover image failed:', e.message);
+      }
+    }
+
+    // แจ้งเตือนตัวเอง (optional)
+    await conn.execute(
+      "INSERT INTO notifications (user_id, type, message, ref_text) VALUES (?, ?, ?, ?)",
+      [user_id, "delete_success", "ลบสูตรอาหารสำเร็จ", `“${title}”`]
+    );
+
+    await conn.commit();
+    res.json({ msg: 'deleted' });
+  } catch (err) {
+    await conn.rollback();
+    console.error(err);
+    res.status(500).json({ msg: 'Server Error' });
+  } finally {
+    conn.release();
+  }
+});
+
+>>>>>>> 73f580b031af0ff1f5fb792fef96874b24ffc275
 // 10) Delete account
 app.post("/api/user/delete", async (req, res) => {
   const { userId, password } = req.body;
@@ -392,7 +476,11 @@ app.post("/api/user/delete", async (req, res) => {
       return res.status(401).json({ msg: "รหัสผ่านไม่ถูกต้อง" });
     }
 
+<<<<<<< HEAD
     const [recipeRows] = await conn.execute("SELECT id FROM recipes WHERE user_id = ?", [userId]);
+=======
+    const [recipeRows] = await conn.execute("SELECT id, cover_image FROM recipes WHERE user_id = ?", [userId]);
+>>>>>>> 73f580b031af0ff1f5fb792fef96874b24ffc275
     const recipeIds = recipeRows.map(r => r.id);
 
     await conn.execute("DELETE FROM favorites WHERE user_id = ?", [userId]);
@@ -405,6 +493,19 @@ app.post("/api/user/delete", async (req, res) => {
       await conn.execute(`DELETE FROM recipes WHERE id IN (${placeholders})`, recipeIds);
     }
 
+<<<<<<< HEAD
+=======
+    // (OPTION) ลบรูปของ recipe ที่ user นี้เคยอัปโหลด
+    for (const r of recipeRows) {
+      if (r.cover_image) {
+        const filePath = path.join(__dirname, 'public', 'uploads', r.cover_image);
+        try {
+          if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+        } catch (_) {}
+      }
+    }
+
+>>>>>>> 73f580b031af0ff1f5fb792fef96874b24ffc275
     await conn.execute("DELETE FROM users WHERE id = ?", [userId]);
 
     await conn.commit();
@@ -456,6 +557,37 @@ app.post("/api/notifications/read", async (req, res) => {
     console.error(err);
     res.status(500).json({ msg: "Server Error" });
   }
+<<<<<<< HEAD
+=======
+});
+
+// Upload profile image
+app.post('/api/user/profile-image', uploadProfile.single('profileImage'), async (req, res) => {
+  const { user_id } = req.body;
+  if (!user_id) return res.status(400).json({ msg: 'missing user_id' });
+  if (!req.file) return res.status(400).json({ msg: 'missing file' });
+
+  try {
+    // (OPTION) ลบรูปเดิมในเครื่อง
+    const [rows] = await pool.execute('SELECT profile_image FROM users WHERE id = ?', [user_id]);
+    const oldImg = rows.length ? rows[0].profile_image : null;
+
+    await pool.execute(
+      'UPDATE users SET profile_image = ? WHERE id = ?',
+      [req.file.filename, user_id]
+    );
+
+    if (oldImg) {
+      const oldPath = path.join(__dirname, 'public', 'uploads', oldImg);
+      try { if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath); } catch (_) {}
+    }
+
+    res.json({ msg: 'ok', profile_image: req.file.filename });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server Error' });
+  }
+>>>>>>> 73f580b031af0ff1f5fb792fef96874b24ffc275
 });
 
 // Start Server

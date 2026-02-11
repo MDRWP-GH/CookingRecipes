@@ -6,12 +6,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Poppins:wght@600&display=swap');
 
 /* 2. ตั้งค่าฟอนต์หลักให้ทั้งเว็บไซต์ */
-body { 
-    margin: 0; 
-    /* ใช้ Noto Sans Thai เป็นตัวหลัก */
-    font-family: 'Noto Sans Thai', sans-serif; 
-    background-color: #f9f9f9; 
-    color: #333;
+body {
+  margin: 0;
+  font-family: 'Noto Sans Thai', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
 }
 
 /* --- ส่วนที่เหลือของ CSS เดิม (Navbar, Buttons ฯลฯ) --- */
@@ -24,174 +23,366 @@ hr { border: 0; border-top: 1px solid #f0f0f0; margin: 0; }
    NAVBAR & HEADER DESIGN (MODERN V.2)
    ========================================= */
 .navbar {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 70px;
-    background: rgba(255, 255, 255, 0.95); /* พื้นหลังโปร่งแสง */
-    backdrop-filter: blur(10px);           /* เอฟเฟกต์เบลอ */
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* เงาฟุ้ง */
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0 40px; box-sizing: border-box;
-    z-index: 1000;
-    transition: all 0.3s ease;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 70px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 40px; box-sizing: border-box;
+  z-index: 1000;
+  transition: all 0.3s ease;
 }
 
 /* --- Brand Logo --- */
 .nav-brand {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.5rem; font-weight: 800;
-    color: #333; letter-spacing: -0.5px;
-    background: linear-gradient(45deg, #FF9F43, #FF6B6B);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 2px 10px rgba(255, 159, 67, 0.2);
-    display: flex; align-items: center; gap: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #333;
+  letter-spacing: -0.5px;
+  background: linear-gradient(45deg, #FF9F43, #FF6B6B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 10px rgba(255, 159, 67, 0.2);
+  display: flex; align-items: center; gap: 8px;
 }
-.nav-brand i { font-size: 1.8rem; color: #FF9F43; -webkit-text-fill-color: #FF9F43; }
-
-/* --- Buttons --- */
-.nav-right { 
-    #user-nav {
-    display: flex;           /* สั่งให้ของข้างในเรียงแนวนอน */
-    align-items: center;     /* จัดให้อยู่กึ่งกลางแนวตั้ง */
-    gap: 20px;              /* เว้นระยะห่างระหว่าง "ปุ่มเขียนสูตร" กับ "โปรไฟล์" */
+.nav-brand i {
+  font-size: 1.8rem;
+  color: #FF9F43;
+  -webkit-text-fill-color: #FF9F43;
 }
 
-/* ลบ margin-left เดิมของ profile-container ออก (เพื่อใช้ gap แทน จะได้เป๊ะกว่า) */
-.profile-container {
-    margin-left: 0 !important; 
+/* --- NAV RIGHT / USER NAV (แก้จาก nested SCSS ให้เป็น CSS ปกติ) --- */
+.nav-right{
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
+
+/* จัด #user-nav ให้อยู่แนวนอน + ระยะห่างระหว่างปุ่มเขียนสูตรกับโปรไฟล์ */
+#user-nav{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* ลบ margin-left เดิมของ profile-container ออก (ใช้ gap แทน) */
+#user-nav .profile-container{
+  margin-left: 0 !important;
 }
 
 /* ปุ่ม Login (Guest) */
 .btn-primary {
-    background: #333; color: white; 
-    padding: 10px 25px; border-radius: 30px;
-    font-size: 14px; font-weight: 600;
-    transition: transform 0.2s, box-shadow 0.2s;
+  background: #333;
+  color: white;
+  padding: 10px 25px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 .btn-primary:hover {
-    background: #000; transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  background: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
 /* ปุ่มเขียนสูตร (Create) */
 .btn-create {
-    background: linear-gradient(135deg, #FF9F43 0%, #FFC048 100%);
-    color: white; border: none; 
-    padding: 10px 20px; border-radius: 30px;
-    font-weight: bold; cursor: pointer;
-    display: flex; align-items: center; gap: 8px;
-    font-size: 14px;
-    box-shadow: 0 4px 10px rgba(255, 159, 67, 0.3);
-    transition: all 0.2s ease;
+  background: linear-gradient(135deg, #FF9F43 0%, #FFC048 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  box-shadow: 0 4px 10px rgba(255, 159, 67, 0.3);
+  transition: all 0.2s ease;
 }
 .btn-create:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(255, 159, 67, 0.5);
-    filter: brightness(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(255, 159, 67, 0.5);
+  filter: brightness(1.05);
 }
 
 /* --- Profile & Dropdown --- */
-.profile-container { position: relative; display: flex; align-items: center; margin-left: 10px; }
+.profile-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
 
 .profile-pic {
-    width: 45px; height: 45px; border-radius: 50%;
-    cursor: pointer; object-fit: cover;
-    border: 2px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    transition: transform 0.2s;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  object-fit: cover;
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: transform 0.2s;
 }
-.profile-pic:hover { transform: scale(1.05); border-color: #FF9F43; }
+.profile-pic:hover {
+  transform: scale(1.05);
+  border-color: #FF9F43;
+}
 
 /* Dropdown Menu */
 .dropdown-menu {
-    position: absolute; top: 60px; right: 0;
-    width: 280px; background: white;
-    border: none; border-radius: 16px;
-    overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-    transform-origin: top right; z-index: 1001;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  width: 280px;
+  background: white;
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  transform-origin: top right;
+  z-index: 1001;
 }
 
 .dropdown-header {
-    padding: 20px; display: flex; align-items: center; gap: 15px;
-    background: linear-gradient(to right, #fff, #f9f9f9); border-bottom: 1px solid #f0f0f0;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: linear-gradient(to right, #fff, #f9f9f9);
+  border-bottom: 1px solid #f0f0f0;
 }
-.dd-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.dd-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 .dd-info { display: flex; flex-direction: column; }
 .dd-name { font-weight: 700; font-size: 16px; color: #333; }
 .dd-username { color: #888; font-size: 13px; margin-top: 2px; }
 
 .dropdown-list li a {
-    display: flex; align-items: center; gap: 12px;
-    padding: 12px 15px; color: #444; font-weight: 500; font-size: 14px;
-    transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  color: #444;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s;
 }
-.dropdown-list a:hover { background: #FFF3E0; color: #FF9F43; padding-left: 20px; }
+.dropdown-list a:hover {
+  background: #FFF3E0;
+  color: #FF9F43;
+  padding-left: 20px;
+}
 .dropdown-list i { font-size: 1.3rem; color: #aaa; }
 .dropdown-list a:hover i { color: #FF9F43; }
 
-.dropdown-footer { padding: 10px 10px 15px; border-top: 1px solid #f0f0f0; }
-.btn-logout {
-    width: 100%; padding: 12px; background: white;
-    color: #FF6B6B; border: 1px solid #FFE5E5;
-    border-radius: 10px; font-weight: bold; cursor: pointer;
-    transition: all 0.2s; font-size: 14px;
+.dropdown-footer {
+  padding: 10px 10px 15px;
+  border-top: 1px solid #f0f0f0;
 }
-.btn-logout:hover { background: #FF6B6B; color: white; border-color: #FF6B6B; }
+.btn-logout {
+  width: 100%;
+  padding: 12px;
+  background: white;
+  color: #FF6B6B;
+  border: 1px solid #FFE5E5;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+.btn-logout:hover {
+  background: #FF6B6B;
+  color: white;
+  border-color: #FF6B6B;
+}
 
 /* --- HERO SECTION --- */
 .hero-section {
-    background-color: #F0FFF4;
-    padding: 120px 20px 60px; /* เพิ่ม padding-top หลบ Navbar */
-    text-align: center; margin-bottom: 20px;
+  background-color: #F0FFF4;
+  padding: 120px 20px 60px;
+  text-align: center;
+  margin-bottom: 20px;
 }
-.hero-content h1 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; margin-bottom: 10px; color: #111; }
-.hero-content p { color: #555; margin-bottom: 30px; font-size: 1rem; }
+.hero-content h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #111;
+}
+.hero-content p {
+  color: #555;
+  margin-bottom: 30px;
+  font-size: 1rem;
+}
 
 .main-search-box {
-    display: flex; align-items: center; justify-content: space-between;
-    background: white; border: 1px solid #eee;
-    border-radius: 50px; padding: 5px 5px 5px 20px;
-    max-width: 600px; margin: 0 auto;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 50px;
+  padding: 5px 5px 5px 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
 }
-.main-search-box input { border: none; outline: none; flex: 1; margin: 0 10px; font-size: 1rem; }
+.main-search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  margin: 0 10px;
+  font-size: 1rem;
+}
 .main-search-box button {
-    background: #86EFAC; border: none; padding: 10px 25px;
-    border-radius: 30px; font-weight: bold; cursor: pointer;
-    transition: background 0.2s;
+  background: #86EFAC;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 .main-search-box button:hover { background: #6ee7b7; }
 
 /* --- MAIN CONTENT & FILTERS --- */
-.container.main-content { max-width: 1200px; margin: 0 auto; padding: 20px; }
-.filter-bar { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+.container.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.filter-bar {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
 .select-group { position: relative; min-width: 180px; }
 .custom-select {
-    width: 100%; padding: 12px 15px; border: 1px solid #eee;
-    border-radius: 12px; background: white; appearance: none; cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  background: white;
+  appearance: none;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
-.select-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #888; }
+.select-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #888;
+}
 .btn-filter-search {
-    background: #333; color: white; border: none; padding: 10px 30px;
-    border-radius: 12px; font-weight: bold; cursor: pointer;
+  background: #333;
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 /* --- RECIPE GRID --- */
-.recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
-.recipe-card {
-    background: white; border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    overflow: hidden; border: 1px solid #f0f0f0;
-    transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
 }
-.recipe-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-.card-img { width: 100%; height: 200px; background-color: #E5E7EB; object-fit: cover; }
+.recipe-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  overflow: hidden;
+  border: 1px solid #f0f0f0;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+.recipe-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.card-img {
+  width: 100%;
+  height: 200px;
+  background-color: #E5E7EB;
+  object-fit: cover;
+}
 .card-content { padding: 20px; }
-.card-title { font-size: 1.2rem; font-weight: bold; margin: 0 0 10px 0; color: #333; }
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  color: #333;
+}
 .card-info { font-size: 0.9rem; color: #666; margin-bottom: 5px; }
-.card-footer { display: flex; align-items: center; gap: 10px; margin-top: 15px; border-top: 1px solid #f9f9f9; padding-top: 15px; }
-.author-img { width: 30px; height: 30px; border-radius: 50%; background: #D1D5DB; object-fit: cover; }
+.card-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  border-top: 1px solid #f9f9f9;
+  padding-top: 15px;
+}
+.author-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #D1D5DB;
+  object-fit: cover;
+}
 .author-name { font-size: 0.85rem; color: #555; font-weight: 600; }
+
+/* ===============================
+   FAVORITE BUTTON (หัวใจขวาล่าง)
+   =============================== */
+.card-img-wrapper{ position: relative; }
+
+.btn-favorite{
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 0;
+  cursor: pointer;
+  background: rgba(255,255,255,0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  transition: transform 0.15s ease, background 0.15s ease;
+  z-index: 2;
+}
+
+.btn-favorite:hover{ transform: scale(1.08); }
+.btn-favorite:active{ transform: scale(0.96); }
+
+.btn-favorite i{
+  font-size: 22px;
+  color: #888;
+  transition: color 0.15s ease;
+}
+
+.btn-favorite.active{
+  background: rgba(255, 240, 244, 0.96);
+}
+.btn-favorite.active i{ color: #ff4d6d; }

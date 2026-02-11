@@ -98,3 +98,35 @@
     transition: 0.2s;
 }
 .btn-cancel:hover { background-color: #ef4444; }
+
+    /* ใส่ใน edit-profile.style.css ก็ได้ แต่ผมแถมให้เลย */
+    .img-preview{
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+      border: 3px solid #fff;
+      margin: 0 auto 16px;
+      overflow: hidden;
+    }
+    .img-overlay{
+      position:absolute; inset:0;
+      background: rgba(0,0,0,0.35);
+      color:#fff;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      opacity:0;
+      transition: opacity .18s ease;
+      font-weight:700;
+      font-size: 13px;
+    }
+    .img-preview:hover .img-overlay{ opacity: 1; }
+    .img-overlay i{ font-size: 22px; }
