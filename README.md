@@ -1,4 +1,11 @@
-# Start : npm run start OR npm run dev
+# Cooking Note
+
+## Start : 
+
+    bash
+npm run start
+
+npm run dev
 
 ## Database :
 * host: 'localhost',
@@ -7,8 +14,11 @@
 * password: 'root',
 * database: 'my_project_db'
 
-### จัดทำโดย
-* นาย ภูริภัทร   วงศ์ไชย      66021971 Front-End
-* นาย ธนภูมิ    กิตติสาเรศ    66021612 Back-End
+## จัดทำโดย
+Front-End
+* นาย ภูริภัทร   วงศ์ไชย      66021971
+Back-End
+* นาย ธนภูมิ    กิตติสาเรศ    66021612 
+Other
 * นาย อิสยาห์   สนเเก้ว      66022332 
 * นาย ชิษณุกร   มาดจินดา     66021386 
