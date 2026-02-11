@@ -22,19 +22,35 @@
 .info-card {
     padding: 30px;
     text-align: center;
-    display: flex; flex-direction: column; align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .profile-avatar-large {
-    width: 100px; height: 100px;
+    width: 100px;
+    height: 100px;
     background-color: #E0E0E0;
     border-radius: 50%;
     margin-bottom: 15px;
 }
 
-.profile-name { font-size: 1.4rem; font-weight: bold; margin: 0 0 5px 0; }
-.profile-id { font-size: 1rem; font-weight: bold; color: #333; margin: 0 0 10px 0; }
-.profile-bio { font-size: 0.9rem; color: #666; margin-bottom: 20px; }
+.profile-name { 
+    font-size: 1.4rem; 
+    font-weight: bold; 
+    margin: 0 0 5px 0; 
+}
+.profile-id { 
+    font-size: 1rem; 
+    font-weight: bold; 
+    color: #333; 
+    margin: 0 0 10px 0; 
+}
+.profile-bio { 
+    font-size: 0.9rem; 
+    color: #666; 
+    margin-bottom: 20px; 
+}
 
 .btn-edit-profile {
     background: white;
@@ -47,8 +63,12 @@
     transition: 0.2s;
     width: 80%;
 }
-.btn-edit-profile:hover { background: #f9f9f9; border-color: #999; }
+.btn-edit-profile:hover { 
+    background: #f9f9f9; 
+    border-color: #999; 
+}
 
+/* (เหลือไว้ได้ ถึงแม้ตอนนี้ไม่ใช้แท็บแล้ว) */
 .profile-tabs {
     display: flex;
     border-bottom: 1px solid #FFCC80;
@@ -72,13 +92,23 @@
     border-bottom: 3px solid black; 
 }
 
-.tab-content-area { padding: 50px 20px; text-align: center; }
-
-.empty-state {
-    display: flex; flex-direction: column; align-items: center; gap: 15px;
+/* ✅ ใช้ตัวเดียวพอ (ลบอันซ้ำ) */
+.tab-content-area { 
+    padding: 20px; 
+    text-align: center; 
 }
 
-.empty-icon { font-size: 4rem; color: #333; }
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.empty-icon { 
+    font-size: 4rem; 
+    color: #333; 
+}
 
 .btn-small-create {
     background: #E0E0E0;
@@ -88,5 +118,21 @@
     font-weight: bold;
     cursor: pointer;
 }
-.btn-small-create:hover { background: #d0d0d0; }
-.hidden { display: none; }
+.btn-small-create:hover { 
+    background: #d0d0d0; 
+}
+
+/* ✅ หัวข้อบนการ์ดฝั่งขวา (สูตรอาหาร) */
+.content-title{
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin: 0;
+    padding: 18px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #222;
+    text-align: center; /* ✅ จัดให้อยู่ตรงกลาง */
+}
+
+.hidden { 
+    display: none; 
+}

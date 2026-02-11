@@ -17,8 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const userEl = document.getElementById('display-username');
   if (userEl) userEl.innerText = '@user_' + userId;
 
-  // (ถ้าหน้าโปรไฟล์มีรูป)
-  const profileImgEl = document.getElementById('profile-image'); // ถ้าใน HTML มี <img id="profile-image">
+  // ✅ ดึงคำอธิบาย (bio) จาก localStorage ที่มาจากหน้า edit-profile
+  const bioEl = document.getElementById('display-bio');
+  const bio = (localStorage.getItem('bio') || '').trim();
+  if (bioEl) bioEl.innerText = bio ? bio : 'คำอธิบาย(ถ้ามี)';
+
+  // (ถ้าหน้าโปรไฟล์มีรูปเป็น <img id="profile-image">)
+  const profileImgEl = document.getElementById('profile-image');
   const profileImage = localStorage.getItem('profile_image') || '';
   if (profileImgEl) {
     profileImgEl.src = profileImage ? `/uploads/${profileImage}` : 'https://via.placeholder.com/120';
@@ -26,21 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // โหลดสูตรของฉัน
   loadMyRecipes(userId);
-
-  // 2) Tab Switching Logic
-  const tabs = document.querySelectorAll('.tab-btn');
-  const contents = document.querySelectorAll('.tab-pane');
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      contents.forEach(c => c.classList.add('hidden'));
-
-      tab.classList.add('active');
-      const targetId = tab.getAttribute('data-target');
-      document.getElementById(targetId)?.classList.remove('hidden');
-    });
-  });
 });
 
 // --- ฟังก์ชันดึงสูตรอาหารของฉัน (ให้เหมือนหน้า Home) ---
@@ -48,13 +38,17 @@ async function loadMyRecipes(userId) {
   const container = document.getElementById('recipes');
   if (!container) return;
 
+  // ใส่ empty-state ตามรูป (เผื่อโหลดช้า)
+  container.innerHTML = renderEmptyRecipeState();
+
   try {
     const res = await fetch(`/api/user/recipes?user_id=${userId}`);
     if (!res.ok) throw new Error('fetch failed');
     const recipes = await res.json();
 
     if (!Array.isArray(recipes) || recipes.length === 0) {
-      container.innerHTML = `<p style="text-align:center; color:#888;">คุณยังไม่มีสูตรอาหาร</p>`;
+      container.innerHTML = renderEmptyRecipeState();
+      bindEmptyPostBtn(container);
       return;
     }
 
@@ -110,6 +104,30 @@ async function loadMyRecipes(userId) {
     console.error('Error loading recipes:', err);
     container.innerHTML = `<p style="text-align:center; color:red;">โหลดข้อมูลไม่สำเร็จ</p>`;
   }
+}
+
+/** ✅ Empty-state ตามรูป + ปุ่ม “+ โพสต์” */
+function renderEmptyRecipeState() {
+  return `
+    <div class="empty-state" style="padding: 60px 10px; text-align:center;">
+      <i class='bx bx-image' style="font-size: 48px; color:#888;"></i>
+      <p style="margin: 12px 0 18px; color:#555;">โพสต์แรกของคุณเลย!</p>
+      <button class="btn-empty-post" type="button"
+        style="background:#e5e7eb; border:none; padding:10px 18px; border-radius:999px; cursor:pointer; font-weight:700;">
+        + โพสต์
+      </button>
+    </div>
+  `;
+}
+
+/** ผูกปุ่ม + โพสต์ ให้ไป create-recipe.html */
+function bindEmptyPostBtn(scopeEl) {
+  const btn = scopeEl.querySelector('.btn-empty-post');
+  if (!btn) return;
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.location.href = 'create-recipe.html';
+  });
 }
 
 function escapeHtml(str) {

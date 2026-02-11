@@ -58,5 +58,8 @@ CREATE TABLE IF NOT EXISTS notifications (
   INDEX (created_at)
 );
 
+ALTER TABLE recipe_steps
+ADD COLUMN step_image VARCHAR(255) NULL;
+
 
 

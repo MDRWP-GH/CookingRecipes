@@ -1,3 +1,8 @@
+// server.js (วางทับทั้งไฟล์)
+// ✅ รองรับ: สมัคร/ล็อกอิน/อัปเดตโปรไฟล์ + อัปโหลดรูปโปรไฟล์
+// ✅ รองรับ: สร้างสูตร + รูปปก + “รูปในแต่ละขั้นตอน” (stepImages + stepImageIndex)
+// ✅ รองรับ: favorites + notifications + ลบสูตรเฉพาะเจ้าของ + ลบบัญชี
+
 require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql2');
@@ -27,33 +32,42 @@ const pool = mysql.createPool({
   connectionLimit: 10
 }).promise();
 
-// --- Multer Configuration ---
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const dir = './public/uploads';
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    cb(null, dir);
-  },
+/* =========================================================
+   Multer: Uploads (cover / step / avatar)
+   ========================================================= */
+function ensureUploadDir() {
+  const dir = './public/uploads';
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  return dir;
+}
+
+// recipe cover + step images
+const recipeStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, ensureUploadDir()),
   filename: (req, file, cb) => {
-    cb(null, 'recipe-' + Date.now() + path.extname(file.originalname));
+    // แยก prefix ตาม fieldname
+    const prefix =
+      file.fieldname === 'coverImage' ? 'cover-' :
+      file.fieldname === 'stepImages' ? 'step-' :
+      'file-';
+    cb(null, prefix + Date.now() + '-' + Math.round(Math.random() * 1e9) + path.extname(file.originalname));
   }
 });
-const upload = multer({ storage });
-// --- Multer for Profile Image ---
+
+// profile image
 const profileStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const dir = './public/uploads';
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    cb(null, dir);
-  },
+  destination: (req, file, cb) => cb(null, ensureUploadDir()),
   filename: (req, file, cb) => {
-    cb(null, 'avatar-' + Date.now() + path.extname(file.originalname));
+    cb(null, 'avatar-' + Date.now() + '-' + Math.round(Math.random() * 1e9) + path.extname(file.originalname));
   }
 });
+
+const uploadRecipe = multer({ storage: recipeStorage });
 const uploadProfile = multer({ storage: profileStorage });
 
-
-// ================= ROUTES =================
+/* =========================================================
+   ROUTES
+   ========================================================= */
 
 // Root route
 app.get('/', (req, res) => {
@@ -118,7 +132,7 @@ app.post('/api/login', async (req, res) => {
 
   try {
     const [users] = await pool.execute(
-      'SELECT * FROM users WHERE username = ? OR email = ?',
+      'SELECT id, username, email, bio, profile_image, password FROM users WHERE username = ? OR email = ?',
       [identifier, identifier]
     );
 
@@ -132,7 +146,15 @@ app.post('/api/login', async (req, res) => {
       return res.status(400).json({ msg: 'รหัสผ่านไม่ถูกต้อง' });
     }
 
-    res.json({ msg: 'เข้าสู่ระบบสำเร็จ!', userId: user.id, username: user.username });
+    // ✅ ส่ง email/bio/profile_image กลับไปด้วย จะได้เซฟใน localStorage
+    res.json({
+      msg: 'เข้าสู่ระบบสำเร็จ!',
+      userId: user.id,
+      username: user.username,
+      email: user.email || '',
+      bio: user.bio || '',
+      profile_image: user.profile_image || ''
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Server Error' });
@@ -167,62 +189,127 @@ app.put('/api/user/update', async (req, res) => {
   }
 });
 
-// 4) Create recipe + notification "โพสต์สำเร็จแล้ว"
-app.post('/api/recipes', upload.single('coverImage'), async (req, res) => {
-  const conn = await pool.getConnection();
+/* =========================================================
+   ✅ Upload profile image
+   ========================================================= */
+app.post('/api/user/profile-image', uploadProfile.single('profileImage'), async (req, res) => {
+  const { user_id } = req.body;
+  if (!user_id) return res.status(400).json({ msg: 'missing user_id' });
+  if (!req.file) return res.status(400).json({ msg: 'missing file' });
+
   try {
-    await conn.beginTransaction();
+    // ลบรูปเดิม (ถ้ามี)
+    const [rows] = await pool.execute('SELECT profile_image FROM users WHERE id = ?', [user_id]);
+    const oldImg = rows.length ? rows[0].profile_image : null;
 
-    const { user_id, title, servings, cooking_time } = req.body;
-    const filename = req.file ? req.file.filename : null;
-
-    const [result] = await conn.execute(
-      'INSERT INTO recipes (user_id, title, servings, cooking_time, cover_image) VALUES (?, ?, ?, ?, ?)',
-      [user_id, title, servings, cooking_time, filename]
-    );
-    const recipeId = result.insertId;
-
-    // Ingredients
-    let ingredients = req.body.ingredients || [];
-    if (!Array.isArray(ingredients)) ingredients = [ingredients];
-    for (const item of ingredients) {
-      if (item) {
-        await conn.execute(
-          'INSERT INTO ingredients (recipe_id, item_name) VALUES (?, ?)',
-          [recipeId, item]
-        );
-      }
-    }
-
-    // Steps
-    let steps = req.body.steps || [];
-    if (!Array.isArray(steps)) steps = [steps];
-    let stepNum = 1;
-    for (const instruction of steps) {
-      if (instruction) {
-        await conn.execute(
-          'INSERT INTO recipe_steps (recipe_id, step_number, instruction) VALUES (?, ?, ?)',
-          [recipeId, stepNum++, instruction]
-        );
-      }
-    }
-
-    // ✅ Notification: post_success
-    await conn.execute(
-      "INSERT INTO notifications (user_id, type, message, ref_text) VALUES (?, ?, ?, ?)",
-      [user_id, "post_success", "โพสต์สำเร็จแล้ว", `“${title}”`]
+    await pool.execute(
+      'UPDATE users SET profile_image = ? WHERE id = ?',
+      [req.file.filename, user_id]
     );
 
-    await conn.commit();
-    res.status(201).json({ msg: 'บันทึกสูตรอาหารสำเร็จ!', recipeId });
+    if (oldImg) {
+      const oldPath = path.join(__dirname, 'public', 'uploads', oldImg);
+      try { if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath); } catch (_) {}
+    }
+
+    res.json({ msg: 'ok', profile_image: req.file.filename });
   } catch (err) {
-    await conn.rollback();
     console.error(err);
-    res.status(500).json({ msg: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล' });
-  } finally {
-    conn.release();
+    res.status(500).json({ msg: 'Server Error' });
   }
 });
+
+/* =========================================================
+   4) Create recipe + cover + step images + notification
+   Frontend ส่ง:
+   - coverImage (single)
+   - ingredients (หลายตัว)
+   - steps (หลายตัว)
+   - stepImages (หลายไฟล์)
+   - stepImageIndex (หลายค่า เช่น "0","2","5" ...)
+   ========================================================= */
+app.post(
+  '/api/recipes',
+  uploadRecipe.fields([
+    { name: 'coverImage', maxCount: 1 },
+    { name: 'stepImages', maxCount: 30 }
+  ]),
+  async (req, res) => {
+    const conn = await pool.getConnection();
+    try {
+      await conn.beginTransaction();
+
+      const { user_id, title, servings, cooking_time } = req.body;
+      const coverFile = req.files?.coverImage?.[0];
+      const coverFilename = coverFile ? coverFile.filename : null;
+
+      const [result] = await conn.execute(
+        'INSERT INTO recipes (user_id, title, servings, cooking_time, cover_image) VALUES (?, ?, ?, ?, ?)',
+        [user_id, title, servings, cooking_time, coverFilename]
+      );
+      const recipeId = result.insertId;
+
+      // Ingredients (รองรับทั้ง ingredients และ ingredients[])
+      let ingredients = req.body.ingredients ?? req.body['ingredients[]'] ?? [];
+      if (!Array.isArray(ingredients)) ingredients = [ingredients];
+      for (const item of ingredients) {
+        const v = String(item || '').trim();
+        if (v) {
+          await conn.execute('INSERT INTO ingredients (recipe_id, item_name) VALUES (?, ?)', [recipeId, v]);
+        }
+      }
+
+      // Steps
+      let steps = req.body.steps ?? req.body['steps[]'] ?? [];
+      if (!Array.isArray(steps)) steps = [steps];
+
+      // map รูป step ตาม index (ป้องกันรูปสลับขั้น)
+      // stepImageIndex อาจเป็น string เดียวหรือ array
+      let imgIndex = req.body.stepImageIndex ?? [];
+      if (!Array.isArray(imgIndex)) imgIndex = [imgIndex];
+
+      const stepFiles = req.files?.stepImages || [];
+      const indexToFilename = {};
+      // สมมติว่า stepImages และ stepImageIndex ส่งมา “ลำดับเดียวกัน”
+      for (let i = 0; i < stepFiles.length; i++) {
+        const idx = Number(imgIndex[i]);
+        if (Number.isFinite(idx)) {
+          indexToFilename[idx] = stepFiles[i].filename;
+        }
+      }
+
+      // ✅ บันทึก step พร้อมรูป (ต้องมีคอลัมน์ image ในตาราง recipe_steps)
+      // ถ้าตารางคุณยังไม่มีคอลัมน์ image ให้เพิ่ม:
+      // ALTER TABLE recipe_steps ADD COLUMN image VARCHAR(255) NULL;
+      let stepNum = 1;
+      for (let i = 0; i < steps.length; i++) {
+        const instruction = String(steps[i] || '').trim();
+        if (instruction) {
+          const img = indexToFilename[i] || null;
+          await conn.execute(
+            'INSERT INTO recipe_steps (recipe_id, step_number, instruction, image) VALUES (?, ?, ?, ?)',
+            [recipeId, stepNum++, instruction, img]
+          );
+        }
+      }
+
+      // Notification: post_success
+      await conn.execute(
+        "INSERT INTO notifications (user_id, type, message, ref_text) VALUES (?, ?, ?, ?)",
+        [user_id, "post_success", "โพสต์สำเร็จแล้ว", `“${title}”`]
+      );
+
+      await conn.commit();
+      res.status(201).json({ msg: 'บันทึกสูตรอาหารสำเร็จ!', recipeId });
+    } catch (err) {
+      await conn.rollback();
+      console.error(err);
+      res.status(500).json({ msg: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล' });
+    } finally {
+      conn.release();
+    }
+  }
+);
 
 // 5) Get favorites
 app.get('/api/favorites', async (req, res) => {
@@ -260,7 +347,6 @@ app.post('/api/favorites', async (req, res) => {
   try {
     await conn.beginTransaction();
 
-    // กันกดซ้ำ
     const [exists] = await conn.execute(
       "SELECT 1 FROM favorites WHERE user_id = ? AND recipe_id = ? LIMIT 1",
       [user_id, recipe_id]
@@ -270,30 +356,16 @@ app.post('/api/favorites', async (req, res) => {
       return res.json({ msg: 'already_favorited' });
     }
 
-    // เพิ่ม favorite
-    await conn.execute(
-      "INSERT INTO favorites (user_id, recipe_id) VALUES (?, ?)",
-      [user_id, recipe_id]
-    );
+    await conn.execute("INSERT INTO favorites (user_id, recipe_id) VALUES (?, ?)", [user_id, recipe_id]);
 
-    // หาเจ้าของสูตร + ชื่อสูตร
-    const [rrows] = await conn.execute(
-      "SELECT user_id AS owner_id, title FROM recipes WHERE id = ?",
-      [recipe_id]
-    );
-
+    const [rrows] = await conn.execute("SELECT user_id AS owner_id, title FROM recipes WHERE id = ?", [recipe_id]);
     if (rrows.length > 0) {
       const ownerId = rrows[0].owner_id;
       const title = rrows[0].title;
 
-      // หา username คนกด favorite
-      const [urows] = await conn.execute(
-        "SELECT username FROM users WHERE id = ?",
-        [user_id]
-      );
+      const [urows] = await conn.execute("SELECT username FROM users WHERE id = ?", [user_id]);
       const actorName = urows.length ? urows[0].username : "ผู้ใช้";
 
-      // แจ้งเจ้าของสูตร (ไม่แจ้งตัวเอง)
       if (Number(ownerId) !== Number(user_id)) {
         await conn.execute(
           "INSERT INTO notifications (user_id, type, message, ref_text) VALUES (?, ?, ?, ?)",
@@ -317,10 +389,7 @@ app.post('/api/favorites', async (req, res) => {
 app.delete('/api/favorites', async (req, res) => {
   const { user_id, recipe_id } = req.body;
   try {
-    await pool.execute(
-      'DELETE FROM favorites WHERE user_id = ? AND recipe_id = ?',
-      [user_id, recipe_id]
-    );
+    await pool.execute('DELETE FROM favorites WHERE user_id = ? AND recipe_id = ?', [user_id, recipe_id]);
     res.json({ msg: 'Deleted' });
   } catch (err) {
     console.error(err);
@@ -343,26 +412,26 @@ app.get('/api/user/recipes', async (req, res) => {
   }
 });
 
-// 9) Get single recipe
+// 9) Get single recipe (รวม steps.image)
 app.get('/api/recipes/:id', async (req, res) => {
   const recipeId = req.params.id;
   try {
-    const [recipeRows] = await pool.execute(`
+    const [recipeRows] = await pool.execute(
+      `
       SELECT r.*, u.username, u.profile_image as author_image 
       FROM recipes r 
       JOIN users u ON r.user_id = u.id 
       WHERE r.id = ?
-    `, [recipeId]);
+    `,
+      [recipeId]
+    );
 
     if (recipeRows.length === 0) {
       return res.status(404).json({ msg: 'ไม่พบสูตรอาหารนี้' });
     }
     const recipe = recipeRows[0];
 
-    const [ingredientRows] = await pool.execute(
-      'SELECT * FROM ingredients WHERE recipe_id = ?',
-      [recipeId]
-    );
+    const [ingredientRows] = await pool.execute('SELECT * FROM ingredients WHERE recipe_id = ?', [recipeId]);
 
     const [stepRows] = await pool.execute(
       'SELECT * FROM recipe_steps WHERE recipe_id = ? ORDER BY step_number ASC',
@@ -393,7 +462,6 @@ app.delete('/api/recipes/:id', async (req, res) => {
   try {
     await conn.beginTransaction();
 
-    // หาเจ้าของ + cover_image
     const [rows] = await conn.execute(
       'SELECT user_id, title, cover_image FROM recipes WHERE id = ?',
       [recipeId]
@@ -408,27 +476,37 @@ app.delete('/api/recipes/:id', async (req, res) => {
     const title = rows[0].title;
     const coverImage = rows[0].cover_image;
 
-    // เช็คสิทธิ์: เฉพาะเจ้าของ
     if (Number(ownerId) !== Number(user_id)) {
       await conn.rollback();
       return res.status(403).json({ msg: 'คุณไม่มีสิทธิ์ลบสูตรนี้' });
     }
 
-    // ลบ recipe (ตารางลูกจะ cascade)
-    await conn.execute('DELETE FROM recipes WHERE id = ?', [recipeId]);
-
-    // (OPTION) ลบไฟล์รูปปกใน uploads ด้วย
-    if (coverImage) {
-      const filePath = path.join(__dirname, 'public', 'uploads', coverImage);
-      try {
-        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-      } catch (e) {
-        // ไม่ให้ fail เพราะลบไฟล์ไม่สำเร็จ (แค่ log)
-        console.warn('Delete cover image failed:', e.message);
-      }
+    // ✅ ดึงรูป step ทั้งหมดก่อนลบ (เพื่อลบไฟล์)
+    let stepImgs = [];
+    try {
+      const [srows] = await conn.execute(
+        'SELECT image FROM recipe_steps WHERE recipe_id = ?',
+        [recipeId]
+      );
+      stepImgs = (srows || []).map(r => r.image).filter(Boolean);
+    } catch (_) {
+      // ถ้าตารางไม่มีคอลัมน์ image ก็ไม่เป็นไร
     }
 
-    // แจ้งเตือนตัวเอง (optional)
+    await conn.execute('DELETE FROM recipes WHERE id = ?', [recipeId]);
+
+    // ลบไฟล์ cover
+    if (coverImage) {
+      const filePath = path.join(__dirname, 'public', 'uploads', coverImage);
+      try { if (fs.existsSync(filePath)) fs.unlinkSync(filePath); } catch (_) {}
+    }
+
+    // ลบไฟล์ step images
+    for (const img of stepImgs) {
+      const p = path.join(__dirname, 'public', 'uploads', img);
+      try { if (fs.existsSync(p)) fs.unlinkSync(p); } catch (_) {}
+    }
+
     await conn.execute(
       "INSERT INTO notifications (user_id, type, message, ref_text) VALUES (?, ?, ?, ?)",
       [user_id, "delete_success", "ลบสูตรอาหารสำเร็จ", `“${title}”`]
@@ -457,7 +535,7 @@ app.post("/api/user/delete", async (req, res) => {
   try {
     await conn.beginTransaction();
 
-    const [users] = await conn.execute("SELECT id, password FROM users WHERE id = ?", [userId]);
+    const [users] = await conn.execute("SELECT id, password, profile_image FROM users WHERE id = ?", [userId]);
     if (users.length === 0) {
       await conn.rollback();
       return res.status(404).json({ msg: "ไม่พบบัญชีผู้ใช้" });
@@ -483,14 +561,18 @@ app.post("/api/user/delete", async (req, res) => {
       await conn.execute(`DELETE FROM recipes WHERE id IN (${placeholders})`, recipeIds);
     }
 
-    // (OPTION) ลบรูปของ recipe ที่ user นี้เคยอัปโหลด
+    // ลบรูป cover ของสูตร
     for (const r of recipeRows) {
       if (r.cover_image) {
         const filePath = path.join(__dirname, 'public', 'uploads', r.cover_image);
-        try {
-          if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-        } catch (_) {}
+        try { if (fs.existsSync(filePath)) fs.unlinkSync(filePath); } catch (_) {}
       }
+    }
+
+    // ลบรูปโปรไฟล์
+    if (user.profile_image) {
+      const p = path.join(__dirname, 'public', 'uploads', user.profile_image);
+      try { if (fs.existsSync(p)) fs.unlinkSync(p); } catch (_) {}
     }
 
     await conn.execute("DELETE FROM users WHERE id = ?", [userId]);
@@ -545,35 +627,6 @@ app.post("/api/notifications/read", async (req, res) => {
     res.status(500).json({ msg: "Server Error" });
   }
 });
-
-// Upload profile image
-app.post('/api/user/profile-image', uploadProfile.single('profileImage'), async (req, res) => {
-  const { user_id } = req.body;
-  if (!user_id) return res.status(400).json({ msg: 'missing user_id' });
-  if (!req.file) return res.status(400).json({ msg: 'missing file' });
-
-  try {
-    // (OPTION) ลบรูปเดิมในเครื่อง
-    const [rows] = await pool.execute('SELECT profile_image FROM users WHERE id = ?', [user_id]);
-    const oldImg = rows.length ? rows[0].profile_image : null;
-
-    await pool.execute(
-      'UPDATE users SET profile_image = ? WHERE id = ?',
-      [req.file.filename, user_id]
-    );
-
-    if (oldImg) {
-      const oldPath = path.join(__dirname, 'public', 'uploads', oldImg);
-      try { if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath); } catch (_) {}
-    }
-
-    res.json({ msg: 'ok', profile_image: req.file.filename });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ msg: 'Server Error' });
-  }
-});
-
 // Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));

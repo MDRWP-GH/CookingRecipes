@@ -1,96 +1,94 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cooking Note - Profile</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/profile.style.css"> 
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cooking Note - Profile</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/profile.style.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="nav-left">
-            <a href="home.html" class="nav-brand">
-                <i class='bx bxs-chef-hat'></i> Cooking Note
-            </a>
-        </div>
-
-        <div class="nav-right">
-            <div id="guest-nav">
-                <a href="Login.html" class="btn-primary">เข้าสู่ระบบ / สมัครสมาชิก</a>
-            </div>
-
-            <div id="user-nav" class="hidden">
-                <button class="btn-create" onclick="window.location.href='create-recipe.html'">
-                    <i class='bx bx-plus'></i> <span>เขียนสูตร</span>
-                </button>
-                
-                <div class="profile-container">
-                    <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic" id="profile-toggle">
-                    
-                    <div class="dropdown-menu hidden" id="user-dropdown">
-                        <div class="dropdown-header">
-                            <img src="https://via.placeholder.com/50" class="dd-avatar">
-                            <div class="dd-info">
-                                <span class="dd-name">ชื่อผู้ใช้</span>
-                                <span class="dd-username">@username</span>
-                            </div>
-                        </div>
-                        <ul class="dropdown-list">
-                            <li><a href="profile.html"><i class='bx bx-user'></i> โปรไฟล์</a></li>
-                            <li><a href="favorites.html"><i class='bx bx-bookmark'></i> รายการโปรด</a></li>
-                            <li><a href="notifications.html"><i class='bx bx-bell'></i> การแจ้งเตือน</a></li>
-                            <li><a href="settings.html"><i class='bx bx-cog'></i> ตั้งค่า</a></li>
-                        </ul>
-                        <div class="dropdown-footer">
-                            <button class="btn-logout" id="logout-btn">ออกจากระบบ</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <div class="profile-wrapper">
-        <div class="profile-card info-card">
-            <div class="profile-avatar-large"></div>
-            <h2 class="profile-name" id="display-name">ชื่อผู้ใช้</h2>
-            <p class="profile-id" id="display-username">ID:@cook_12345</p>
-            <p class="profile-bio" id="display-bio">คำอธิบาย(ถ้ามี)</p>
-            <a href="edit-profile.html" style="text-decoration: none; width: 80%;">
-                <button class="btn-edit-profile" style="width: 100%;">แก้ไขโปรไฟล์</button>
-            </a>
-        </div>
-
-        <div class="profile-card content-card">
-            <div class="profile-tabs">
-                <button class="tab-btn active" data-target="recipes">สูตรอาหาร</button>
-                <button class="tab-btn" data-target="posts">โพสต์</button>
-            </div>
-
-            <div class="tab-content-area">
-                <div id="recipes" class="tab-pane active">
-                    <div class="empty-state">
-                        <i class='bx bx-book-content empty-icon'></i>
-                        <p>สูตรอาหารแรกของคุณเลย!</p>
-                        <button class="btn-small-create" onclick="window.location.href='create-recipe.html'">+ เขียนสูตร</button>
-                    </div>
-                </div>
-                <div id="posts" class="tab-pane hidden">
-                    <div class="empty-state">
-                        <i class='bx bx-image empty-icon'></i>
-                        <p>โพสต์แรกของคุณเลย!</p>
-                        <button class="btn-small-create">+ โพสต์</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="home.html" class="nav-brand">
+        <i class='bx bxs-chef-hat'></i> Cooking Note
+      </a>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="js/nav-script.js"></script>
-    <script src="js/profile.js"></script> 
+    <div class="nav-right">
+      <div id="guest-nav">
+        <a href="Login.html" class="btn-primary">เข้าสู่ระบบ / สมัครสมาชิก</a>
+      </div>
+
+      <div id="user-nav" class="hidden">
+        <button class="btn-create" onclick="window.location.href='create-recipe.html'">
+          <i class='bx bx-plus'></i> <span>เขียนสูตร</span>
+        </button>
+
+        <div class="profile-container">
+          <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic" id="profile-toggle">
+
+          <div class="dropdown-menu hidden" id="user-dropdown">
+            <div class="dropdown-header">
+              <img src="https://via.placeholder.com/50" class="dd-avatar">
+              <div class="dd-info">
+                <span class="dd-name">ชื่อผู้ใช้</span>
+                <span class="dd-username">@username</span>
+              </div>
+            </div>
+            <ul class="dropdown-list">
+              <li><a href="profile.html"><i class='bx bx-user'></i> โปรไฟล์</a></li>
+              <li><a href="favorites.html"><i class='bx bx-bookmark'></i> รายการโปรด</a></li>
+              <li><a href="notifications.html"><i class='bx bx-bell'></i> การแจ้งเตือน</a></li>
+              <li><a href="settings.html"><i class='bx bx-cog'></i> ตั้งค่า</a></li>
+            </ul>
+            <div class="dropdown-footer">
+              <button class="btn-logout" id="logout-btn">ออกจากระบบ</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <div class="profile-wrapper">
+    <div class="profile-card info-card">
+      <div class="profile-avatar-large"></div>
+      <h2 class="profile-name" id="display-name">ชื่อผู้ใช้</h2>
+      <p class="profile-id" id="display-username">ID:@cook_12345</p>
+      <p class="profile-bio" id="display-bio">คำอธิบาย(ถ้ามี)</p>
+
+      <a href="edit-profile.html" style="text-decoration:none; width: 80%;">
+        <button class="btn-edit-profile" style="width:100%;">แก้ไขโปรไฟล์</button>
+      </a>
+    </div>
+
+    <div class="profile-card content-card">
+
+  <!-- 🔥 เพิ่มหัวข้อ -->
+  <h3 class="content-title">สูตรอาหาร</h3>
+
+  <div class="tab-content-area">
+    <div id="recipes" class="tab-pane active">
+      <div class="empty-state">
+        <i class='bx bx-book-content empty-icon'></i>
+        <p>สูตรอาหารแรกของคุณเลย!</p>
+        <button class="btn-small-create" onclick="window.location.href='create-recipe.html'">
+          + เขียนสูตร
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <script src="js/nav-script.js"></script>
+  <script src="js/profile.js"></script>
 </body>
 </html>
