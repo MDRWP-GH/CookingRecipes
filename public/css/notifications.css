@@ -1,0 +1,128 @@
+/* หลบ navbar fixed */
+.noti-wrap{
+  padding-top: 110px;
+}
+
+/* หัวข้อ */
+.noti-title{
+  margin: 0 0 18px 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #111;
+}
+
+/* 리스트 */
+.noti-list{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 720px;
+}
+
+/* card สไตล์เดียวกับ recipe-card */
+.noti-card{
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  padding: 16px 18px;
+
+  transition: transform .2s, box-shadow .2s;
+}
+
+.noti-card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* ไอคอนซ้าย */
+.noti-icon{
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid #111;
+  color: #111;
+  flex: 0 0 44px;
+}
+
+.noti-icon i{
+  font-size: 22px;
+}
+
+/* ไอคอนแบบสำเร็จ */
+.noti-icon-success{
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+/* ข้อความ */
+.noti-text{
+  flex: 1;
+  padding-top: 2px;
+}
+
+.noti-main{
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #222;
+  line-height: 1.4;
+}
+
+.noti-sub{
+  margin-top: 6px;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+/* จัด list ให้อยู่กลางเหมือนหน้าอื่น ๆ */
+.noti-list{
+  margin: 0 auto;
+}
+
+/* ข้อความตอนว่าง/ปิดแจ้งเตือน (ที่ JS ใส่ .noti-empty) */
+.noti-empty{
+  max-width: 720px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  color: #444;
+  font-weight: 700;
+}
+
+/* ✅ ยังไม่อ่าน: ทำให้ดูเด่นขึ้น */
+.noti-main.noti-unread{
+  font-weight: 900;
+}
+
+/* ✅ ยังไม่อ่าน: ทำให้การ์ดมีไฮไลต์นิด ๆ */
+.noti-card:has(.noti-unread){
+  border-color: #ffe2c4;
+  box-shadow: 0 10px 25px rgba(255,159,67,0.12);
+}
+
+/* ถ้าเบราว์เซอร์ไม่รองรับ :has ให้ยังอ่านง่ายด้วยการใส่แถบจุด */
+.noti-card{
+  position: relative;
+}
+.noti-card .noti-unread::before{
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #FF9F43;
+  margin-right: 8px;
+  transform: translateY(-1px);
+}

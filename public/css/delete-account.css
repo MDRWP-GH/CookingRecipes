@@ -1,0 +1,123 @@
+/* ให้หน้าเข้ากับ Home: ใช้พื้นหลังเดิมของเว็บ + เว้นระยะหลบ navbar */
+.delete-wrap{
+  padding-top: 120px;            /* หลบ navbar fixed 70px */
+  padding-bottom: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+/* การ์ดสไตล์เดียวกับ recipe-card (มุมโค้ง + เงานุ่ม) */
+.delete-card{
+  width: 900px;
+  max-width: 92vw;
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  padding: 26px 28px 20px;
+}
+
+/* หัวข้อแบบอ่านง่าย */
+.delete-title{
+  margin: 0 0 10px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #111;
+}
+
+.delete-desc{
+  margin: 0 0 12px;
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.delete-list{
+  margin: 0 0 18px 20px;
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* ช่องใส่รหัสผ่านให้เข้ากับฟอร์มสมัยใหม่ */
+.delete-input{
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  outline: none;
+  font-size: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.delete-input:focus{
+  border-color: #FF9F43;
+  box-shadow: 0 0 0 4px rgba(255,159,67,0.15);
+}
+
+/* ปุ่มจัดกึ่งกลางแบบในรูป แต่ใช้โทนเดียวกับเว็บ */
+.delete-actions{
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+
+/* ปุ่มยกเลิก: โทนเทา */
+.btn-cancel{
+  min-width: 140px;
+  padding: 12px 18px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  background: #f3f3f3;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-cancel:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+/* ปุ่มลบบัญชี: ให้เด่นขึ้นตามธีม (ส้ม/แดงแบบแบรนด์) */
+.btn-delete{
+  min-width: 140px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF9F43 100%);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(255, 107, 107, 0.25);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-delete:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(255, 107, 107, 0.35);
+}
+
+/* เวลากำลังลบ (ปุ่ม disabled) */
+.btn-delete:disabled{
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* แสดง error ใต้ input (เผื่ออนาคต) */
+.delete-error{
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #FF6B6B;
+  font-weight: 700;
+}
+
+/* ถ้ารหัสผ่านผิด ให้ input ขึ้นแดง */
+.delete-input.error{
+  border-color: #FF6B6B;
+  box-shadow: 0 0 0 4px rgba(255,107,107,0.15);
+}

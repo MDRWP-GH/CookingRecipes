@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cooking Note - Settings</title>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/settings.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="home.html" class="nav-brand">
+        <i class='bx bxs-chef-hat'></i> Cooking Note
+      </a>
+    </div>
+
+    <div class="nav-right">
+      <div id="guest-nav">
+        <a href="Login.html" class="btn-primary">เข้าสู่ระบบ / สมัครสมาชิก</a>
+      </div>
+
+      <div id="user-nav" class="hidden">
+        <button class="btn-create" id="createBtn" type="button">
+          <i class='bx bx-plus'></i> <span>เขียนสูตร</span>
+        </button>
+
+        <div class="profile-container">
+          <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic" id="profile-toggle">
+
+          <div class="dropdown-menu hidden" id="user-dropdown">
+            <div class="dropdown-header">
+              <img src="https://via.placeholder.com/50" class="dd-avatar" id="ddAvatar">
+              <div class="dd-info">
+                <span class="dd-name" id="ddName">ชื่อผู้ใช้</span>
+                <span class="dd-username" id="ddUsername">@username</span>
+              </div>
+            </div>
+            <ul class="dropdown-list">
+              <li><a href="profile.html"><i class='bx bx-user'></i> โปรไฟล์</a></li>
+              <li><a href="favorites.html"><i class='bx bx-bookmark'></i> รายการโปรด</a></li>
+              <li><a href="notifications.html"><i class='bx bx-bell'></i> การแจ้งเตือน</a></li>
+              <li><a href="settings.html"><i class='bx bx-cog'></i> ตั้งค่า</a></li>
+            </ul>
+            <div class="dropdown-footer">
+              <button class="btn-logout" id="logout-btn" type="button">ออกจากระบบ</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Settings -->
+  <div class="container main-content settings-wrap">
+    <div class="settings-card">
+      <div class="settings-title">การตั้งค่า</div>
+
+      <!-- ✅ แถวบัญชี: กดได้จริง -> ไปหน้า delete-account -->
+      <div class="settings-row settings-row-click" id="deleteAccountRow">
+        <div class="settings-label">บัญชี</div>
+        <div class="settings-value" id="accountText">ลบบัญชีของคุณ</div>
+      </div>
+
+      <!-- ✅ การแจ้งเตือน: เปิด/ปิด ใช้งานจริง -->
+      <div class="settings-row settings-row-split">
+        <div class="settings-label">การแจ้งเตือน</div>
+        <div class="settings-actions">
+          <button class="settings-mini-btn" type="button" data-notify="on">เปิด</button>
+          <button class="settings-mini-btn" type="button" data-notify="off">ปิด</button>
+        </div>
+      </div>
+
+      <!-- ✅ ออกจากระบบกลางหน้า -->
+      <button class="settings-logout-btn" id="logoutBtn2" type="button">ออกจากระบบ</button>
+    </div>
+  </div>
+
+  <script src="js/nav-script.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>
