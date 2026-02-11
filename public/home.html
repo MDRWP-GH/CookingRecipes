@@ -25,10 +25,10 @@
                 <button class="btn-create" onclick="window.location.href='create-recipe.html'">
                     <i class='bx bx-plus'></i> <span>เขียนสูตร</span>
                 </button>
-                
+
                 <div class="profile-container">
                     <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic" id="profile-toggle">
-                    
+
                     <div class="dropdown-menu hidden" id="user-dropdown">
                         <div class="dropdown-header">
                             <img src="https://via.placeholder.com/50" class="dd-avatar">
@@ -56,11 +56,11 @@
         <div class="hero-content">
             <h1>Discover Delicious Thai Recipes</h1>
             <p>Explore authentic Thai cuisine, share your own recipes, and connect with food lovers around the world</p>
-            
+
             <div class="main-search-box">
                 <i class='bx bx-search'></i>
-                <input type="text" placeholder="ค้นหาชื่อเมนูหรือวัตถุดิบ">
-                <button>search</button>
+                <input type="text" id="main-search-input" placeholder="ค้นหาชื่อเมนูหรือวัตถุดิบ">
+                <button id="main-search-btn" type="button">search</button>
             </div>
         </div>
     </header>
@@ -68,8 +68,8 @@
     <div class="container main-content">
         <div class="filter-bar">
             <div class="select-group">
-                <select class="custom-select">
-                    <option value="" disabled selected>ประเภทเมนู</option>
+                <select class="custom-select" id="category-filter">
+                    <option value="" selected>ประเภทเมนู</option>
                     <option value="tom">ต้ม</option>
                     <option value="pad">ผัด</option>
                     <option value="gang">แกง</option>
@@ -77,23 +77,25 @@
                 </select>
                 <i class='bx bx-chevron-down select-icon'></i>
             </div>
+
             <div class="select-group">
-                <select class="custom-select">
-                    <option value="" disabled selected>วิธีการทำ</option>
+                <select class="custom-select" id="difficulty-filter">
+                    <option value="" selected>วิธีการทำ</option>
                     <option value="easy">ง่าย</option>
                     <option value="medium">ปานกลาง</option>
                     <option value="hard">ยาก</option>
                 </select>
                 <i class='bx bx-chevron-down select-icon'></i>
             </div>
-            <button class="btn-filter-search">search</button>
+
+            <button class="btn-filter-search" id="filter-search-btn" type="button">search</button>
         </div>
 
         <div class="recipe-grid" id="recipe-grid"></div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="js/nav-script.js"></script> 
+    <script src="js/nav-script.js"></script>
     <script src="js/home.js"></script>
 </body>
 </html>

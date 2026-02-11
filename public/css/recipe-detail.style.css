@@ -75,3 +75,29 @@
     .cover-image { width: 100%; height: 250px; }
     .recipe-body { flex-direction: column; }
 }
+
+.btn-delete-recipe{
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 0;
+  cursor: pointer;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  transition: transform .15s ease;
+}
+
+.btn-delete-recipe:hover{ transform: scale(1.08); }
+.btn-delete-recipe:active{ transform: scale(0.96); }
+
+.btn-delete-recipe i{
+  font-size: 24px;
+  color: #ff4d6d;
+}
