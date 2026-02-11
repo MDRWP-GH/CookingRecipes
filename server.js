@@ -39,6 +39,19 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage });
+// --- Multer for Profile Image ---
+const profileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dir = './public/uploads';
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => {
+    cb(null, 'avatar-' + Date.now() + path.extname(file.originalname));
+  }
+});
+const uploadProfile = multer({ storage: profileStorage });
+
 
 // ================= ROUTES =================
 
@@ -530,6 +543,34 @@ app.post("/api/notifications/read", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: "Server Error" });
+  }
+});
+
+// Upload profile image
+app.post('/api/user/profile-image', uploadProfile.single('profileImage'), async (req, res) => {
+  const { user_id } = req.body;
+  if (!user_id) return res.status(400).json({ msg: 'missing user_id' });
+  if (!req.file) return res.status(400).json({ msg: 'missing file' });
+
+  try {
+    // (OPTION) ลบรูปเดิมในเครื่อง
+    const [rows] = await pool.execute('SELECT profile_image FROM users WHERE id = ?', [user_id]);
+    const oldImg = rows.length ? rows[0].profile_image : null;
+
+    await pool.execute(
+      'UPDATE users SET profile_image = ? WHERE id = ?',
+      [req.file.filename, user_id]
+    );
+
+    if (oldImg) {
+      const oldPath = path.join(__dirname, 'public', 'uploads', oldImg);
+      try { if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath); } catch (_) {}
+    }
+
+    res.json({ msg: 'ok', profile_image: req.file.filename });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server Error' });
   }
 });
 

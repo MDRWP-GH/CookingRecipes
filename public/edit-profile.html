@@ -1,170 +1,238 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cooking Note - Edit Profile</title>
-    
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/edit-profile.style.css">
-    
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cooking Note - Edit Profile</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/edit-profile.style.css" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
 </head>
 <body>
-
-    <nav class="navbar">
-        <div class="nav-left">
-            <a href="home.html" class="nav-brand">
-                <i class='bx bxs-chef-hat'></i> Cooking Note
-            </a>
-        </div>
-
-        <div class="nav-right">
-            <div id="guest-nav">
-                <a href="Login.html" class="btn-primary">เข้าสู่ระบบ / สมัครสมาชิก</a>
-            </div>
-
-            <div id="user-nav" class="hidden">
-                <button class="btn-create" onclick="window.location.href='create-recipe.html'">
-                    <i class='bx bx-plus'></i> <span>เขียนสูตร</span>
-                </button>
-                
-                <div class="profile-container">
-                    <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic" id="profile-toggle">
-                    
-                    <div class="dropdown-menu hidden" id="user-dropdown">
-                        <div class="dropdown-header">
-                            <img src="https://via.placeholder.com/50" class="dd-avatar">
-                            <div class="dd-info">
-                                <span class="dd-name">ชื่อผู้ใช้</span>
-                                <span class="dd-username">@username</span>
-                            </div>
-                        </div>
-                        <ul class="dropdown-list">
-                            <li><a href="profile.html"><i class='bx bx-user'></i> โปรไฟล์</a></li>
-                            <li><a href="favorites.html"><i class='bx bx-bookmark'></i> รายการโปรด</a></li>
-                            <li><a href="notifications.html"><i class='bx bx-bell'></i> การแจ้งเตือน</a></li>
-                            <li><a href="settings.html"><i class='bx bx-cog'></i> ตั้งค่า</a></li>
-                        </ul>
-                        <div class="dropdown-footer">
-                            <button class="btn-logout" id="logout-btn">ออกจากระบบ</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <div class="edit-wrapper">
-        <div class="edit-card">
-            
-            <div class="profile-img-container">
-                <div class="img-preview"></div>
-                </div>
-
-            <form id="editProfileForm">
-                <div class="form-group">
-                    <label>ชื่อผู้ใช้</label>
-                    <input type="text" id="username" value="ใจดี" required>
-                </div>
-
-                <div class="form-group">
-                    <label>ID</label>
-                    <input type="text" id="userId" value="@cook_12345" readonly style="background-color: #f9f9f9; color: #666;">
-                    </div>
-
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="email" value="123@gmail.com" required>
-                </div>
-
-                <div class="form-group">
-                    <label>คำอธิบาย</label>
-                    <textarea id="bio" rows="4"></textarea>
-                </div>
-
-                <div class="btn-group">
-                    <button type="submit" class="btn-update">อัพเดท</button>
-                    <button type="button" class="btn-cancel" onclick="window.location.href='profile.html'">ยกเลิก</button>
-                </div>
-            </form>
-
-        </div>
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="home.html" class="nav-brand">
+        <i class="bx bxs-chef-hat"></i> Cooking Note
+      </a>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="js/nav-script.js"></script>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-        // 1. ดึง ID และข้อมูลจาก LocalStorage (ที่ได้มาตอน Login)
-        const userId = localStorage.getItem('userId'); 
-        const currentUsername = localStorage.getItem('username'); 
-        
-        // ถ้าไม่มี userId แปลว่ายังไม่ได้ Login -> ดีดกลับไปหน้า Login
-        if(!userId) {
-            alert('กรุณาเข้าสู่ระบบก่อนแก้ไขข้อมูล');
-            window.location.href = 'Login.html';
+    <div class="nav-right">
+      <div id="guest-nav">
+        <a href="Login.html" class="btn-primary">เข้าสู่ระบบ / สมัครสมาชิก</a>
+      </div>
+
+      <div id="user-nav" class="hidden">
+        <button class="btn-create" onclick="window.location.href='create-recipe.html'">
+          <i class="bx bx-plus"></i> <span>เขียนสูตร</span>
+        </button>
+
+        <div class="profile-container">
+          <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic" id="profile-toggle" />
+
+          <div class="dropdown-menu hidden" id="user-dropdown">
+            <div class="dropdown-header">
+              <img src="https://via.placeholder.com/50" class="dd-avatar" />
+              <div class="dd-info">
+                <span class="dd-name">ชื่อผู้ใช้</span>
+                <span class="dd-username">@username</span>
+              </div>
+            </div>
+            <ul class="dropdown-list">
+              <li><a href="profile.html"><i class="bx bx-user"></i> โปรไฟล์</a></li>
+              <li><a href="favorites.html"><i class="bx bx-bookmark"></i> รายการโปรด</a></li>
+              <li><a href="notifications.html"><i class="bx bx-bell"></i> การแจ้งเตือน</a></li>
+              <li><a href="settings.html"><i class="bx bx-cog"></i> ตั้งค่า</a></li>
+            </ul>
+            <div class="dropdown-footer">
+              <button class="btn-logout" id="logout-btn">ออกจากระบบ</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="edit-wrapper">
+    <div class="edit-card">
+      <!-- ✅ โปรไฟล์รูป: คลิกเพื่อเปลี่ยน -->
+      <div class="profile-img-container">
+        <div class="img-preview" id="img-preview" title="คลิกเพื่อเปลี่ยนรูป">
+          <div class="img-overlay">
+            <i class="bx bx-camera"></i>
+            <span>เปลี่ยนรูป</span>
+          </div>
+        </div>
+
+        <!-- input file ซ่อนไว้ -->
+        <input type="file" id="profileFile" accept="image/*" hidden />
+      </div>
+
+      <form id="editProfileForm">
+        <div class="form-group">
+          <label>ชื่อผู้ใช้</label>
+          <input type="text" id="username" value="" required />
+        </div>
+
+        <div class="form-group">
+          <label>ID</label>
+          <input type="text" id="userId" value="" readonly style="background-color:#f9f9f9;color:#666;" />
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email" value="" required />
+        </div>
+
+        <div class="form-group">
+          <label>คำอธิบาย</label>
+          <textarea id="bio" rows="4"></textarea>
+        </div>
+
+        <div class="btn-group">
+          <button type="submit" class="btn-update">อัพเดท</button>
+          <button type="button" class="btn-cancel" onclick="window.location.href='profile.html'">ยกเลิก</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <script src="js/nav-script.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const userId = localStorage.getItem('userId');
+      const currentUsername = localStorage.getItem('username');
+      const currentEmail = localStorage.getItem('email') || '';
+      const currentBio = localStorage.getItem('bio') || '';
+      const currentProfileImage = localStorage.getItem('profile_image') || ''; // เก็บชื่อไฟล์รูป (ถ้ามี)
+
+      if (!userId) {
+        alert('กรุณาเข้าสู่ระบบก่อนแก้ไขข้อมูล');
+        window.location.href = 'Login.html';
+        return;
+      }
+
+      // เติมค่าเริ่มต้นในฟอร์ม
+      document.getElementById('userId').value = '@user_' + userId;
+      if (currentUsername) document.getElementById('username').value = currentUsername;
+      if (currentEmail) document.getElementById('email').value = currentEmail;
+      if (currentBio) document.getElementById('bio').value = currentBio;
+
+      // ✅ ตั้งรูปโปรไฟล์เริ่มต้น
+      const preview = document.getElementById('img-preview');
+      if (currentProfileImage) {
+        preview.style.backgroundImage = `url('/uploads/${currentProfileImage}')`;
+      } else {
+        preview.style.backgroundImage = `url('https://via.placeholder.com/140')`;
+      }
+
+      // ✅ คลิกรูปเพื่อเลือกไฟล์
+      const fileInput = document.getElementById('profileFile');
+      preview.addEventListener('click', () => fileInput.click());
+
+      // ✅ preview รูปทันที + อัปโหลดขึ้น server
+      fileInput.addEventListener('change', async () => {
+        const file = fileInput.files?.[0];
+        if (!file) return;
+
+        // เช็คคร่าวๆ
+        if (!file.type.startsWith('image/')) {
+          alert('กรุณาเลือกไฟล์รูปภาพเท่านั้น');
+          fileInput.value = '';
+          return;
+        }
+        if (file.size > 3 * 1024 * 1024) {
+          alert('ไฟล์ใหญ่เกินไป (จำกัด 3MB)');
+          fileInput.value = '';
+          return;
+        }
+
+        // Preview ทันที
+        const url = URL.createObjectURL(file);
+        preview.style.backgroundImage = `url('${url}')`;
+
+        // Animation เบาๆ
+        if (window.anime) {
+          anime({ targets: preview, scale: [0.98, 1], duration: 250, easing: 'easeOutQuad' });
+        }
+
+        // Upload ไป backend
+        try {
+          const fd = new FormData();
+          fd.append('user_id', userId);
+          fd.append('profileImage', file);
+
+          const res = await fetch('/api/user/profile-image', {
+            method: 'POST',
+            body: fd
+          });
+
+          const result = await res.json();
+
+          if (!res.ok) {
+            alert(result.msg || 'อัปโหลดรูปไม่สำเร็จ');
             return;
+          }
+
+          // เก็บชื่อไฟล์ลง localStorage
+          localStorage.setItem('profile_image', result.profile_image);
+
+          alert('อัปโหลดรูปโปรไฟล์สำเร็จ!');
+        } catch (e) {
+          console.error(e);
+          alert('เกิดข้อผิดพลาดในการอัปโหลดรูป');
         }
+      });
 
-        // แสดง ID และ ชื่อเดิม (ถ้ามี) เพื่อให้ User รู้ว่ากำลังแก้ของใคร
-        document.getElementById('userId').value = '@user_' + userId;
-        if(currentUsername) {
-            document.getElementById('username').value = currentUsername;
+      // ✅ Update profile (username/email/bio)
+      const form = document.getElementById('editProfileForm');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const btn = document.querySelector('.btn-update');
+        const originalText = btn.innerText;
+        btn.innerText = 'กำลังบันทึก...';
+        btn.disabled = true;
+
+        const data = {
+          id: userId,
+          username: document.getElementById('username').value,
+          email: document.getElementById('email').value,
+          bio: document.getElementById('bio').value
+        };
+
+        try {
+          const res = await fetch('/api/user/update', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+
+          const result = await res.json();
+
+          if (res.ok) {
+            alert('บันทึกข้อมูลเรียบร้อย!');
+
+            localStorage.setItem('username', result.username);
+            localStorage.setItem('bio', result.bio ?? data.bio);
+            localStorage.setItem('email', data.email);
+
+            window.location.href = 'profile.html';
+          } else {
+            alert(result.msg);
+          }
+        } catch (err) {
+          console.error('Error:', err);
+          alert('เกิดข้อผิดพลาดในการเชื่อมต่อกับ Server');
+        } finally {
+          btn.innerText = originalText;
+          btn.disabled = false;
         }
-
-        // 2. ส่วนการกดปุ่ม "อัพเดท" (Update)
-        const form = document.getElementById('editProfileForm');
-        
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault(); // ห้ามรีเฟรชหน้า
-            
-            // ล็อกปุ่มกันกดรัวๆ
-            const btn = document.querySelector('.btn-update');
-            const originalText = btn.innerText;
-            btn.innerText = 'กำลังบันทึก...';
-            btn.disabled = true;
-
-            // เตรียมข้อมูลที่จะส่ง
-            const data = {
-                id: userId,
-                username: document.getElementById('username').value,
-                email: document.getElementById('email').value,
-                bio: document.getElementById('bio').value
-            };
-
-            try {
-                // ยิงไปหา Server (Backend)
-                const res = await fetch('/api/user/update', {
-                    method: 'PUT', 
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await res.json();
-
-                if (res.ok) {
-                    // ถ้าสำเร็จ
-                    alert('บันทึกข้อมูลเรียบร้อย!');
-                    // อัปเดตชื่อใหม่ลงเครื่องด้วย (เผื่อเขาเปลี่ยนชื่อ)
-                    localStorage.setItem('username', result.username); 
-                    window.location.href = 'profile.html'; // กลับไปหน้าโปรไฟล์
-                } else {
-                    // ถ้าไม่สำเร็จ (เช่น ชื่อซ้ำ)
-                    alert(result.msg);
-                }
-
-            } catch (err) {
-                console.error('Error:', err);
-                alert('เกิดข้อผิดพลาดในการเชื่อมต่อกับ Server');
-            } finally {
-                // ปลดล็อกปุ่ม ไม่ว่าจะผ่านหรือไม่ผ่าน
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }
-        });
+      });
     });
-    </script>
+  </script>
+
 </body>
 </html>
