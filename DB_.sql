@@ -46,3 +46,17 @@ CREATE TABLE IF NOT EXISTS favorites (
     UNIQUE KEY unique_favorite (user_id, recipe_id) -- ป้องกันการกดซ้ำ (1 คนกด like สูตรเดิมได้แค่ครั้งเดียว)
 );
 
+CREATE TABLE IF NOT EXISTS notifications (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,              -- เจ้าของแจ้งเตือน (คนที่ต้องเห็น)
+  type VARCHAR(50) NOT NULL,         -- favorite / post_success / ...
+  message VARCHAR(255) NOT NULL,     -- ข้อความบรรทัดบน
+  ref_text VARCHAR(255) NULL,        -- เช่น “ผัดกะเพรา”
+  is_read TINYINT(1) NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX (user_id),
+  INDEX (created_at)
+);
+
+
+

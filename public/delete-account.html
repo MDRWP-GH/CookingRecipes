@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ลบบัญชีของคุณ</title>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/delete-account.css">
+ <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+</head>
+<body>
+
+  <div class="delete-wrap">
+    <div class="delete-card">
+      <h1 class="delete-title">ลบบัญชีของคุณ</h1>
+
+      <p class="delete-desc">
+        หากคุณแน่ใจว่าจะลบบัญชีของคุณ กรุณาใส่รหัสผ่านโดยกรอกรหัสผ่านตามนี้
+      </p>
+
+      <ul class="delete-list">
+        <li>คุณจะไม่สามารถกู้คืนบัญชีนี้ได้</li>
+        <li>สูตรและข้อมูลทั้งหมดของคุณจะถูกลบอย่างถาวร และคุณจะไม่สามารถกู้คืนมาอีกได้</li>
+      </ul>
+
+      <input
+        type="password"
+        id="password"
+        class="delete-input"
+        placeholder="ใส่รหัสผ่าน เพื่อยืนยันบัญชี"
+      />
+
+      <div class="delete-actions">
+        <button class="btn-cancel" id="cancelBtn" type="button">ยกเลิก</button>
+        <button class="btn-delete" id="deleteBtn" type="button">ลบบัญชี</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/delete-account.js"></script>
+</body>
+</html>

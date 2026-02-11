@@ -1,0 +1,124 @@
+/* settings.css — ให้เข้าธีมเดียวกับ style.css (Home) */
+
+/* กันชนกับ navbar fixed */
+.settings-wrap{
+  padding-top: 110px;
+  display: flex;
+  justify-content: center;
+}
+
+/* กล่องหลัก */
+.settings-card{
+  width: 640px;
+  max-width: 92vw;
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  padding: 22px;
+}
+
+/* หัวข้อ */
+.settings-title{
+  font-size: 16px;
+  font-weight: 800;
+  color: #333;
+  margin-bottom: 14px;
+}
+
+/* แถวทั่วไป: ให้ดูเป็น “การ์ดแถว” เหมือน UI หน้า Home */
+.settings-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+  margin-top: 12px;
+}
+
+/* แถวแบบคลิก (ลบบัญชี) */
+.settings-row-click{
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.settings-row-click:hover{
+  transform: translateY(-1px);
+  border-color: #ffe2c4;
+  box-shadow: 0 6px 16px rgba(255,159,67,0.12);
+}
+
+/* label + value */
+.settings-label{
+  font-size: 14px;
+  font-weight: 800;
+  color: #333;
+}
+.settings-value{
+  font-size: 14px;
+  color: #666;
+  font-weight: 600;
+}
+
+/* แถว “การแจ้งเตือน” แบบแยกซ้าย/ขวา */
+.settings-row-split{
+  /* ใช้ settings-row เดิมได้เลย แค่อ่านง่าย */
+}
+
+/* กลุ่มปุ่มด้านขวา */
+.settings-actions{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* ปุ่มย่อย เปิด/ปิด */
+.settings-mini-btn{
+  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 800;
+  color: #333;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.settings-mini-btn:hover{
+  transform: translateY(-1px);
+  border-color: #ddd;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+}
+
+/* ✅ ให้ตรงกับ settings.js (ใช้ is-active) */
+.settings-mini-btn.is-active{
+  background: #111;
+  color: #fff;
+  border-color: #111;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.16);
+}
+
+/* ปุ่มออกจากระบบกลางหน้า */
+.settings-logout-btn{
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid #FFE5E5;
+  background: #fff;
+  color: #FF6B6B;
+  font-weight: 900;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.settings-logout-btn:hover{
+  background: #FF6B6B;
+  color: #fff;
+  border-color: #FF6B6B;
+  box-shadow: 0 10px 25px rgba(255,107,107,0.22);
+}
